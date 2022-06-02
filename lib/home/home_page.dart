@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/common/constant/constant.dart';
+import 'package:state_management/home/home.dart';
 import 'package:state_management/home/widget/github.dart';
-import 'package:state_management/home/widget/widget.dart';
+
+const options = ['No Package', 'Provider', 'RiverPod', 'Flutter Bloc'];
+
+enum Option {
+  noPackage,
+  provider,
+  riverpod,
+  flutterBloc,
+}
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    final options = ['No Package', 'Provider', 'RiverPod', 'Flutter Bloc'];
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Flutter State Managament'),
@@ -36,14 +43,20 @@ class HomePage extends StatelessWidget {
                 ),
                 const SizedBox(height: Values.padding),
                 Column(
-                  children: List.from(
-                    options.map(
-                      (option) => MenuOption(
-                        title: option,
-                        onPress: () {},
-                      ),
-                    ),
-                  ),
+                  children: options
+                      .asMap()
+                      .entries
+                      .map(
+                        (entry) => MenuOption(
+                          title: entry.value,
+                          onPress: () => _onOptionSelect(
+                            context,
+                            entry.value,
+                            Option.values.elementAt(entry.key),
+                          ),
+                        ),
+                      )
+                      .toList(),
                 ),
                 const SizedBox(height: Values.paddingDouble),
                 const Github(),
@@ -53,5 +66,25 @@ class HomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _onOptionSelect(BuildContext context, String title, Option option) {
+    switch (option) {
+      case Option.noPackage:
+        break;
+      case Option.provider:
+        break;
+      case Option.riverpod:
+        break;
+      case Option.flutterBloc:
+        break;
+    }
+    // Call page
+    // Navigator.push(
+    //   context,
+    //   MaterialPageRoute(
+    //     builder: (context) {},
+    //   ),
+    // );
   }
 }

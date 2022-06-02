@@ -15,22 +15,22 @@ class MenuOption extends StatelessWidget {
   Widget build(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(
-        maxWidth: 600,
+        maxWidth: Values.layoutmMaxWidth,
       ),
       child: Card(
-        elevation: 5,
+        elevation: Values.cardElevation,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(Values.borderRadius),
         ),
         child: InkWell(
-          onTap: () {},
+          onTap: () {
+            onPress();
+          },
           borderRadius: BorderRadius.circular(Values.borderRadius),
           child: Padding(
-            padding: const EdgeInsets.fromLTRB(
-              Values.padding,
-              22,
-              Values.padding,
-              22,
+            padding: const EdgeInsets.symmetric(
+              horizontal: Values.padding,
+              vertical: 22,
             ),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.center,
