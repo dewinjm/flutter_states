@@ -4,6 +4,7 @@ class Palette {
   static const primary = Color(0xFF3B3C53);
   static const accent = Color(0xFFF13737);
   static const text = Color(0xFF626368);
+  static const form = Color(0xFFF3F5F5);
 
   static const MaterialColor primaryMaterialColor = MaterialColor(
     0xFF3B3C53, // 0% comes in here, this will be color picked if no shade is selected when defining a Color property which doesn’t require a swatch.
