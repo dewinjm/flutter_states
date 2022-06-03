@@ -1,4 +1,4 @@
-import 'package:state_management/common/data/catalog/model/model.dart';
+import 'package:state_management/common/catalog/model/model.dart';
 
 abstract class CatalogDataSource {
   Future<List<Catalog>> getFakeData();

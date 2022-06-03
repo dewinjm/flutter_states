@@ -1,6 +1,6 @@
-import 'package:state_management/common/data/catalog/data_source/data_source.dart';
-import 'package:state_management/common/data/catalog/model/model.dart';
-import 'package:state_management/common/data/catalog/repository/repository.dart';
+import 'package:state_management/common/catalog/data_source/data_source.dart';
+import 'package:state_management/common/catalog/model/model.dart';
+import 'package:state_management/common/catalog/repository/repository.dart';
 
 class CatalogRepositoryImpl implements CatalogRepository {
   CatalogRepositoryImpl({required this.remoteDataResponse});
