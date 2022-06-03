@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/common/constant/constant.dart';
-import 'package:state_management/home/home.dart';
-import 'package:state_management/home/widget/github.dart';
+import 'package:state_management/home/widget/widget.dart';
 
 const options = ['No Package', 'Provider', 'RiverPod', 'Flutter Bloc'];
 
