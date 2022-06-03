@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-
-import 'common/constant/constant.dart';
-import 'home/home.dart';
+import 'package:state_management/common/constant/constant.dart';
+import 'package:state_management/home/home.dart';
 
 class App extends StatelessWidget {
   const App({Key? key}) : super(key: key);
