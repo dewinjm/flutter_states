@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:state_management/app.dart';
+import 'package:state_management/app/view/app.dart';
 import 'package:state_management/home/home.dart';
 
 void main() {
