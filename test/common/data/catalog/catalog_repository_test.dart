@@ -13,11 +13,13 @@ void main() {
     const fakeRemoteDataSource = [
       Catalog(
         name: 'Tomatoes',
+        id: 10,
         price: 1.98,
         unit: '1lb',
         imageAsset: 'fake_image.png',
       ),
       Catalog(
+        id: 11,
         name: 'Pineapple',
         price: 2.18,
         unit: 'Each',
@@ -27,7 +29,7 @@ void main() {
 
     setUp(() {
       dataSource = _MockCatalogDataSource();
-      catalogRepository = CatalogRepositoryImpl(remoteDataResponse: dataSource);
+      catalogRepository = CatalogRepositoryImpl(dataSource: dataSource);
     });
 
     group('Fetch', () {
