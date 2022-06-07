@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/common/constant/constant.dart';
+import 'package:state_management/features/no_package/no_package.dart';
 import 'package:state_management/home/widget/widget.dart';
 
 const options = ['No Package', 'Provider', 'RiverPod', 'Flutter Bloc'];
@@ -50,7 +51,6 @@ class HomePage extends StatelessWidget {
                           title: entry.value,
                           onPress: () => _onOptionSelect(
                             context,
-                            entry.value,
                             Option.values.elementAt(entry.key),
                           ),
                         ),
@@ -67,9 +67,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _onOptionSelect(BuildContext context, String title, Option option) {
+  void _onOptionSelect(BuildContext context, Option option) {
+    Widget? page;
+
     switch (option) {
       case Option.noPackage:
+        page = const CatalogPage();
         break;
       case Option.provider:
         break;
@@ -77,13 +80,12 @@ class HomePage extends StatelessWidget {
         break;
       case Option.flutterBloc:
         break;
+      default:
+        page = const CatalogPage();
+        break;
     }
-    // Call page
-    // Navigator.push(
-    //   context,
-    //   MaterialPageRoute(
-    //     builder: (context) {},
-    //   ),
-    // );
+
+    if (page == null) return;
+    Navigator.push(context, MaterialPageRoute(builder: (context) => page!));
   }
 }
