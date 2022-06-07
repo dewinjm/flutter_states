@@ -49,7 +49,7 @@ const fakeCatalogoResponse = [
   ),
   Catalog(
     id: 7,
-    name: 'Apple',
+    name: 'Banana',
     price: 1.63,
     unit: 'Buch',
     imageAsset: 'assets/images/banana.png',
@@ -88,5 +88,12 @@ const fakeCatalogoResponse = [
     price: 2.97,
     unit: '20oz',
     imageAsset: 'assets/images/milk.png',
+  ),
+  Catalog(
+    id: 13,
+    name: 'Apple',
+    price: 3.12,
+    unit: '1lb',
+    imageAsset: 'assets/images/apple.png',
   ),
 ];

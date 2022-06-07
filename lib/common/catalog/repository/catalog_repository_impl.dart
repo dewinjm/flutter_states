@@ -3,20 +3,15 @@ import 'package:state_management/common/catalog/model/model.dart';
 import 'package:state_management/common/catalog/repository/repository.dart';
 
 class CatalogRepositoryImpl implements CatalogRepository {
-  CatalogRepositoryImpl({required this.remoteDataResponse});
+  CatalogRepositoryImpl({required this.dataSource});
 
-  final CatalogDataSource remoteDataResponse;
+  final CatalogDataSource dataSource;
 
   @override
   Future<List<Catalog>>? fetch() async {
     try {
-      var fakeList = await remoteDataResponse.getFakeData();
-
-      fakeList
-          .asMap()
-          .entries
-          .toList()
-          .sort(((a, b) => a.value.name.compareTo(b.value.name)));
+      List<Catalog> fakeList = List.from(await dataSource.getFakeData());
+      fakeList.sort(((a, b) => a.name.compareTo(b.name)));
 
       return Future.delayed(
         const Duration(milliseconds: 800),
