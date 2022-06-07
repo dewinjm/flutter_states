@@ -14,7 +14,7 @@ void main() {
     test('should return correct toString', () {
       expect(
         fakeModel.toString(),
-        'Catalog(fake name, 1.0, fake unit, fake_image)',
+        'Catalog(1, fake name, 1.0, fake unit, fake_image)',
       );
     });
 
