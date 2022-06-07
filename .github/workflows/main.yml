@@ -1,0 +1,38 @@
+name: ci
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📚 Git Checko📝ut
+      - uses: actions/checkout@v3
+      
+      - uses: subosito/flutter-action@v2
+      
+      - name: 📦 Install Dependencies
+        run: flutter packages get
+      
+      - name: 📝 Format
+        run: flutter format --set-exit-if-changed lib test
+
+      - name: 📊 Analyze
+        run: flutter analyze --no-current-package lib test/
+
+      - name: 🧪 Run tests
+        run: flutter test --no-pub --coverage $(ls test/*_test.dart)
+        
+      - name: ✅ Check Code Coverage
+        uses: VeryGoodOpenSource/very_good_coverage@v1.2.1
+        with:
+          path: './coverage/lcov.info'
+          min_coverage: 80
+          exclude: '**/*_observer.dart **/change.dart'
+
+
