@@ -3,7 +3,7 @@ import 'package:state_management/common/constant/constant.dart';
 import 'package:state_management/features/no_package/no_package.dart';
 import 'package:state_management/home/widget/widget.dart';
 
-const options = ['No Package', 'Provider', 'RiverPod', 'Flutter Bloc'];
+const options = ['No Package', 'Provider', 'Riverpod', 'Flutter Bloc'];
 
 enum Option {
   noPackage,
@@ -48,6 +48,7 @@ class HomePage extends StatelessWidget {
                       .entries
                       .map(
                         (entry) => MenuOption(
+                          key: Key('_menu_${entry.key}'),
                           title: entry.value,
                           onPress: () => _onOptionSelect(
                             context,
