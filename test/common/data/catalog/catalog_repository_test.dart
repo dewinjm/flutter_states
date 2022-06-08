@@ -12,17 +12,17 @@ void main() {
 
     const fakeRemoteDataSource = [
       Catalog(
-        name: 'Tomatoes',
-        id: 10,
-        price: 1.98,
-        unit: '1lb',
-        imageAsset: 'fake_image.png',
-      ),
-      Catalog(
         id: 11,
         name: 'Pineapple',
         price: 2.18,
         unit: 'Each',
+        imageAsset: 'fake_image.png',
+      ),
+      Catalog(
+        name: 'Tomatoes',
+        id: 10,
+        price: 1.98,
+        unit: '1lb',
         imageAsset: 'fake_image.png',
       ),
     ];
