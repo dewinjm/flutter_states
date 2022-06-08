@@ -6,25 +6,19 @@ class Github extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        //html.window.open('https://github.com/dewinjm', 'Github');
-      },
-      borderRadius: BorderRadius.circular(Values.borderRadius),
-      child: Column(
-        children: [
-          Image.asset(
-            'assets/images/github.png',
-            width: 48,
+    return Column(
+      children: [
+        Image.asset(
+          'assets/images/github.png',
+          width: 48,
+        ),
+        const Text(
+          'dewinjm',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
           ),
-          const Text(
-            'dewinjm',
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }
