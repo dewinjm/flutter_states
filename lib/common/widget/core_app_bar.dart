@@ -21,6 +21,7 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       actions: [
         IconButton(
+          key: const Key('_core_app_bar_button'),
           onPressed: () => onPressed(),
           icon: Stack(
             children: [

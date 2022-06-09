@@ -37,6 +37,7 @@ class CoreCatalogItem extends StatelessWidget {
                 ],
               ),
               IconButton(
+                key: Key('_core_catalog_item_${catalog.id}'),
                 onPressed: () => onPressed(),
                 splashRadius: 28,
                 icon: const Icon(
@@ -88,7 +89,7 @@ class CoreCatalogItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  catalog.price.toString(),
+                  '\$${catalog.price.toString()}',
                   style: const TextStyle(
                     color: Palette.accent,
                     fontWeight: FontWeight.w700,
