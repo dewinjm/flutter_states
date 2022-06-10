@@ -1,6 +1,4 @@
-import 'package:state_management/common/catalog/data_source/data_source.dart';
-import 'package:state_management/common/catalog/model/model.dart';
-import 'package:state_management/common/catalog/repository/repository.dart';
+import 'package:state_management/common/common.dart';
 
 class CatalogRepositoryImpl implements CatalogRepository {
   CatalogRepositoryImpl({required this.dataSource});
@@ -14,7 +12,7 @@ class CatalogRepositoryImpl implements CatalogRepository {
       fakeList.sort(((a, b) => a.name.compareTo(b.name)));
 
       return Future.delayed(
-        const Duration(milliseconds: 800),
+        const Duration(milliseconds: Values.timeLoad),
         () => fakeList,
       );
     } catch (ex) {

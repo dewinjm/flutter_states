@@ -12,4 +12,8 @@ class Values {
   static const iconSize = 32.0;
   static const cardElevation = 5.0;
   static const layoutmMaxWidth = 600.0;
+
+  //Timer
+  static const timeProcess = 1; //Seconds
+  static const timeLoad = 800; //milliseconds
 }

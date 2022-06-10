@@ -89,7 +89,7 @@ class CoreCatalogItem extends StatelessWidget {
             Row(
               children: [
                 Text(
-                  '\$${catalog.price.toString()}',
+                  '\$${catalog.price.toStringAsFixed(2)}',
                   style: const TextStyle(
                     color: Palette.accent,
                     fontWeight: FontWeight.w700,

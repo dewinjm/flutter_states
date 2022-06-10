@@ -15,10 +15,25 @@ class CatalogItem extends StatelessWidget {
       key: Key('_item_${catalog.id.toString()}'),
       catalog: catalog,
       onPressed: () {
-        cartNotifier.add(
-          Cart(item: catalog, count: 1),
-        );
+        cartNotifier.add(Cart(item: catalog, count: 1));
+
+        _messageBar(context);
       },
+    );
+  }
+
+  void _messageBar(BuildContext context) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        backgroundColor: Colors.green,
+        duration: const Duration(milliseconds: 900),
+        content: Row(
+          children: [
+            const Icon(Icons.plus_one, color: Palette.form),
+            Text('${catalog.name} added'),
+          ],
+        ),
+      ),
     );
   }
 }

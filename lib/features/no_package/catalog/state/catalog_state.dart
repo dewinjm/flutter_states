@@ -14,7 +14,7 @@ class CatalogState extends InheritedWidget {
   final CartNotifier cartNotifier;
 
   static CatalogState of(BuildContext context) =>
-      context.findAncestorWidgetOfExactType<CatalogState>()!;
+      context.dependOnInheritedWidgetOfExactType<CatalogState>()!;
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;

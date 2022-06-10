@@ -49,7 +49,7 @@ void main() {
 
       inner.cartNotifier.add(fakeCart);
 
-      expect(inner.cartNotifier.itemCount, equals(10));
+      expect(inner.cartNotifier.items.length, equals(10));
       expect(inner.updateShouldNotify(inner), false);
     });
   });
