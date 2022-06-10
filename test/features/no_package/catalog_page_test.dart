@@ -36,7 +36,7 @@ void main() {
       await _pumpView(tester);
       const key = Key('_core_catalog_item_1');
 
-      expect(find.byType(CoreCatalogItem), findsWidgets);
+      expect(find.byType(CatalogItemBase), findsWidgets);
       expect(find.byKey(key), findsOneWidget);
 
       await tester.ensureVisible(find.byKey(key));

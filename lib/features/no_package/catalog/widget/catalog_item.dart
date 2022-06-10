@@ -11,7 +11,7 @@ class CatalogItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final cartNotifier = CatalogState.of(context).cartNotifier;
 
-    return CoreCatalogItem(
+    return CatalogItemBase(
       key: Key('_item_${catalog.id.toString()}'),
       catalog: catalog,
       onPressed: () {
