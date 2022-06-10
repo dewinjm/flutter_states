@@ -1,5 +1,4 @@
-import 'package:state_management/common/cart/model/cart.dart';
-import 'package:state_management/common/cart/repository/repository.dart';
+import 'package:state_management/common/common.dart';
 
 class CartRepositoryImpl implements CartRepository {
   @override
@@ -7,7 +6,7 @@ class CartRepositoryImpl implements CartRepository {
     if (cartItems.isEmpty) return false;
 
     return Future.delayed(
-      const Duration(milliseconds: 800),
+      const Duration(seconds: Values.timeProcess),
       () => true,
     );
   }

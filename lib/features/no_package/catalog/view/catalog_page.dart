@@ -25,10 +25,23 @@ class _CatalogPageState extends State<CatalogPage> {
         appBar: CoreAppBar(
           title: 'No Package Catalog',
           badge: const Badge(),
-          onPressed: () {},
+          onPressed: () => _goToCart(),
         ),
         body: const CatalogView(),
       ),
+    );
+  }
+
+  void _goToCart() {
+    final cartPage = CartState(
+      cartRepository: CartRepositoryImpl(),
+      cartNotifier: cartNotifier,
+      child: const CartPage(),
+    );
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => cartPage),
     );
   }
 }

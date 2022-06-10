@@ -11,12 +11,13 @@ void main() {
           price: 5,
           imageAsset: 'fake_path'),
       count: 10,
+      amount: 5,
     );
 
     test('should return correct toString', () {
       expect(
         fakeCart.toString(),
-        'Cart(Catalog(1, Fake Name, 5.0, 1lb, fake_path), 10)',
+        'Cart(Catalog(1, Fake Name, 5.0, 1lb, fake_path), 10, 5.0)',
       );
     });
 
@@ -30,6 +31,7 @@ void main() {
           imageAsset: 'fake_path',
         ),
         count: 10,
+        amount: 5,
       );
       expect(instance == fakeCart, true);
     });
@@ -37,7 +39,7 @@ void main() {
     test('should return correct model when use copyWith', () {
       expect(
         fakeCart.copyWith(count: 2).toString(),
-        'Cart(Catalog(1, Fake Name, 5.0, 1lb, fake_path), 2)',
+        'Cart(Catalog(1, Fake Name, 5.0, 1lb, fake_path), 2, 5.0)',
       );
 
       const model = Catalog(
@@ -50,7 +52,11 @@ void main() {
 
       expect(
         fakeCart.copyWith(item: model).toString(),
-        'Cart(Catalog(2, Name, 2.1, 2lb, fake_path), 10)',
+        'Cart(Catalog(2, Name, 2.1, 2lb, fake_path), 10, 5.0)',
+      );
+      expect(
+        fakeCart.copyWith(amount: 21).toString(),
+        'Cart(Catalog(1, Fake Name, 5.0, 1lb, fake_path), 10, 21.0)',
       );
     });
   });
