@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/common/common.dart';
 
-class CoreCatalogContainer extends StatelessWidget {
-  const CoreCatalogContainer({
+class CatalogContainer extends StatelessWidget {
+  const CatalogContainer({
     required this.listOfCatalog,
     Key? key,
   }) : super(key: key);

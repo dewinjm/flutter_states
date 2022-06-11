@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:state_management/common/cart/widget/cart_payment_progress.dart';
 import 'package:state_management/common/common.dart';
 import 'package:state_management/features/no_package/no_package.dart';
 
@@ -59,17 +58,19 @@ class _CartViewState extends State<CartView> {
   }
 
   void _saveCart() async {
-    await _showDialogProgress(context);
+    _showDialogProgress(context);
 
     final isSuccessful = await cartState.process();
     if (isSuccessful) _showDialogSuccessful();
   }
 
-  Future<void> _showDialogProgress(BuildContext context) async {
+  void _showDialogProgress(BuildContext context) async {
     showDialog<CartPaymentProgress>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) => const CartPaymentProgress(),
+      builder: (BuildContext context) {
+        return const CartPaymentProgress();
+      },
     );
   }
 

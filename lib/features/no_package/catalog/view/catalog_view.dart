@@ -7,7 +7,7 @@ class CatalogView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CoreCatalogContainer(
+    return CatalogContainer(
       listOfCatalog: _builListOfCatalog(context),
     );
   }

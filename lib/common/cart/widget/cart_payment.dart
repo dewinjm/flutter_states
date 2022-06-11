@@ -50,6 +50,7 @@ class CartPayment extends StatelessWidget {
                 maxWidth: Values.layoutmMaxWidth,
               ),
               child: ElevatedButton(
+                key: const Key('_cart_payment_button'),
                 onPressed: () => onPressed(),
                 style: ElevatedButton.styleFrom(
                   shape: RoundedRectangleBorder(

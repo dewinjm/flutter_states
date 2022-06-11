@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:state_management/common/catalog/model/catalog.dart';
 import 'package:state_management/common/constant/constant.dart';
 
-class CoreCatalogItem extends StatelessWidget {
-  const CoreCatalogItem({
+class CatalogItemBase extends StatelessWidget {
+  const CatalogItemBase({
     required this.onPressed,
     required this.catalog,
     Key? key,
