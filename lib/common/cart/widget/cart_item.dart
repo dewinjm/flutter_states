@@ -52,6 +52,7 @@ class CartItem extends StatelessWidget {
 
   Widget _buildRemove() {
     return IconButton(
+      key: const Key('_cart_item_remove'),
       onPressed: () => onChange(CartItemOption.remove),
       splashRadius: 22,
       icon: Container(
@@ -139,6 +140,7 @@ class CartItem extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         IconButton(
+          key: const Key('_cart_item_increase'),
           onPressed: () => onChange(CartItemOption.increase),
           splashRadius: 22,
           icon: const Icon(
@@ -157,6 +159,7 @@ class CartItem extends StatelessWidget {
         AbsorbPointer(
           absorbing: disableDecrease,
           child: IconButton(
+            key: const Key('_cart_item_decrease'),
             onPressed: () => onChange(CartItemOption.decrease),
             splashRadius: 22,
             icon: Icon(
