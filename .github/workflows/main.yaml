@@ -1,10 +1,6 @@
 name: ci
 
-on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+on: [pull_request, push]
 
 jobs:
   build:
@@ -23,14 +19,14 @@ jobs:
         run: flutter format --set-exit-if-changed lib test
 
       - name: 📊 Analyze
-        run: flutter analyze --no-current-package lib test/
+        run: flutter analyze lib test
 
       - name: 🧪 Run tests
-        run: flutter test --no-pub --coverage $(ls test/*_test.dart)
+        run: flutter test --no-pub --coverage --test-randomize-ordering-seed random
         
       - name: ✅ Check Code Coverage
-        uses: VeryGoodOpenSource/very_good_coverage@v1.2.1
+        uses: VeryGoodOpenSource/very_good_coverage@v1
         with:
           path: './coverage/lcov.info'
-          min_coverage: 95
+          min_coverage: 10
           exclude: '**/*_observer.dart **/change.dart'
