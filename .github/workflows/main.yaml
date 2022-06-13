@@ -30,3 +30,8 @@ jobs:
           path: './coverage/lcov.info'
           min_coverage: 10
           exclude: '**/*_observer.dart **/change.dart'
+      
+      - name: ⬆️ Upload coverage to Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
