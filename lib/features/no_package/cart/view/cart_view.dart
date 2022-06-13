@@ -58,19 +58,18 @@ class _CartViewState extends State<CartView> {
   }
 
   void _saveCart() async {
-    _showDialogProgress(context);
+    _showDialogProgress();
+    await Future.delayed(const Duration(milliseconds: 500));
 
     final isSuccessful = await cartState.process();
     if (isSuccessful) _showDialogSuccessful();
   }
 
-  void _showDialogProgress(BuildContext context) async {
+  void _showDialogProgress() async {
     showDialog<CartPaymentProgress>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const CartPaymentProgress();
-      },
+      builder: (BuildContext context) => const CartPaymentProgress(),
     );
   }
 
