@@ -21,7 +21,7 @@ class CartDialog extends StatelessWidget {
             case CartStatus.loading:
               return _buildProgress();
             case CartStatus.done:
-              return _buildSucessful();
+              return _buildSucessful(context);
           }
         }),
       ),
@@ -39,7 +39,7 @@ class CartDialog extends StatelessWidget {
     );
   }
 
-  Widget _buildSucessful() {
+  Widget _buildSucessful(context) {
     return Stack(
       alignment: AlignmentDirectional.center,
       children: [
@@ -47,7 +47,7 @@ class CartDialog extends StatelessWidget {
           right: 0,
           top: 0,
           child: IconButton(
-            onPressed: () => _onBack(),
+            onPressed: () => _onBack(context),
             splashRadius: 22,
             icon: const Icon(
               Icons.close,
@@ -87,8 +87,8 @@ class CartDialog extends StatelessWidget {
     );
   }
 
-  void _onBack() {
-    NavigatorRouter.navigatorKey.currentState!.pop(); //Close Dialog
-    NavigatorRouter.navigatorKey.currentState!.pop(); //Go back page
+  void _onBack(BuildContext context) {
+    Navigator.of(context).pop(); //Close Dialog
+    Navigator.of(context).pop(); //Go back page
   }
 }
