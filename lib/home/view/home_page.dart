@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/common/constant/constant.dart';
-import 'package:state_management/features/no_package/no_package.dart';
+import 'package:state_management/features/no_package/no_package.dart'
+    as no_package;
+
+import 'package:state_management/features/provider/provider.dart' as provider;
 import 'package:state_management/home/widget/widget.dart';
 
 const options = ['No Package', 'Provider', 'Riverpod', 'Flutter Bloc'];
@@ -73,16 +76,20 @@ class HomePage extends StatelessWidget {
 
     switch (option) {
       case Option.noPackage:
-        page = const CatalogPage();
+        page = const no_package.CatalogPage();
         break;
       case Option.provider:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const provider.MainView()),
+        );
         break;
       case Option.riverpod:
         break;
       case Option.flutterBloc:
         break;
       default:
-        page = const CatalogPage();
+        page = const no_package.CatalogPage();
         break;
     }
 
