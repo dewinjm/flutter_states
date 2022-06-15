@@ -23,6 +23,13 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Text(title),
       centerTitle: true,
       elevation: 0,
+      leading: IconButton(
+        onPressed: () => Navigator.of(context, rootNavigator: true).maybePop(),
+        icon: const Icon(
+          Icons.arrow_back_ios,
+          size: Values.iconSize,
+        ),
+      ),
       actions: [
         Padding(
           padding: EdgeInsets.all(padding),
