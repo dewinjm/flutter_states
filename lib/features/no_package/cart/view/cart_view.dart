@@ -20,11 +20,11 @@ class _CartViewState extends State<CartView> {
     return ValueListenableBuilder(
       valueListenable: cartNotifier,
       builder: (context, items, _) {
-        if (cartNotifier.items.isEmpty) return const CartEmpty();
+        if (cartNotifier.value.isEmpty) return const CartEmpty();
 
         return CartContainer(
           listOfCart: Column(
-            children: cartNotifier.items
+            children: cartNotifier.value
                 .asMap()
                 .entries
                 .map((entry) => CartItem(
@@ -58,28 +58,20 @@ class _CartViewState extends State<CartView> {
   }
 
   void _saveCart() async {
-    _showDialogProgress();
-    await Future.delayed(const Duration(milliseconds: 500));
+    _showDialog();
 
     final isSuccessful = await cartState.process();
-    if (isSuccessful) _showDialogSuccessful();
+    if (isSuccessful) cartState.cartNotifier.resetStatus();
   }
 
-  void _showDialogProgress() async {
-    showDialog<CartPaymentProgress>(
+  void _showDialog() async {
+    showDialog<CartDialog>(
       context: context,
       barrierDismissible: false,
-      builder: (BuildContext context) => const CartPaymentProgress(),
-    );
-  }
-
-  void _showDialogSuccessful() async {
-    Navigator.pop(context);
-    Navigator.pop(context);
-
-    showDialog<CartPaymentSuccess>(
-      context: context,
-      builder: (BuildContext context) => const CartPaymentSuccess(),
+      useRootNavigator: false,
+      builder: (BuildContext context) => CartDialog(
+        cartState: cartState,
+      ),
     );
   }
 }

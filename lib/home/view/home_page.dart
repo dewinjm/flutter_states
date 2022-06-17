@@ -76,20 +76,17 @@ class HomePage extends StatelessWidget {
 
     switch (option) {
       case Option.noPackage:
-        page = const no_package.CatalogPage();
+        page = const no_package.MainView();
         break;
       case Option.provider:
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const provider.MainView()),
-        );
+        page = const provider.MainView();
         break;
       case Option.riverpod:
         break;
       case Option.flutterBloc:
         break;
       default:
-        page = const no_package.CatalogPage();
+        page = const no_package.MainView();
         break;
     }
 

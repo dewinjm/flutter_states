@@ -10,38 +10,20 @@ class CatalogPage extends StatefulWidget {
 }
 
 class _CatalogPageState extends State<CatalogPage> {
-  final cartNotifier = CartNotifier([]);
-  final catalogRepository = CatalogRepositoryImpl(
-    dataSource: CatalogDataSourceImpl(),
-  );
-
   @override
   Widget build(BuildContext context) {
-    return CatalogState(
-      catalogRepository: catalogRepository,
-      cartNotifier: cartNotifier,
-      child: Scaffold(
-        backgroundColor: Palette.primary,
-        appBar: CoreAppBar(
-          title: 'No Package Catalog',
-          badge: const Badge(),
-          onPressed: () => _goToCart(),
-        ),
-        body: const CatalogView(),
+    return Scaffold(
+      backgroundColor: Palette.primary,
+      appBar: CoreAppBar(
+        title: 'No Package Catalog',
+        badge: const Badge(),
+        onPressed: () => _goToCart(),
       ),
+      body: const CatalogView(),
     );
   }
 
   void _goToCart() {
-    final cartPage = CartState(
-      cartRepository: CartRepositoryImpl(),
-      cartNotifier: cartNotifier,
-      child: const CartPage(),
-    );
-
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => cartPage),
-    );
+    Navigator.of(context).pushNamed('/cart');
   }
 }

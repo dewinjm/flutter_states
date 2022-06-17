@@ -15,7 +15,7 @@ void main() {
     mockCartRepository = _MockCartRepository();
   });
 
-  group('CartPage', () {
+  group('No Package: CartPage', () {
     const fakeCatalogItem = Catalog(
       id: 1,
       name: 'fake name',
@@ -119,14 +119,14 @@ void main() {
           await tester.ensureVisible(find.byKey(key));
           await tester.tap(find.byKey(key));
 
-          expect(cartState.cartNotifier.items, isEmpty);
+          expect(cartState.cartNotifier.value, isEmpty);
         },
       );
     });
 
     group('onPaymentPressed', () {
       testWidgets(
-        'should successful when payment button pressed',
+        'should show dialog when payment button pressed',
         (tester) async {
           late CartState cartState;
 
@@ -150,7 +150,7 @@ void main() {
 
           when(
             () => mockCartRepository.send(
-              cartItems: cartState.cartNotifier.items,
+              cartItems: cartState.cartNotifier.value,
             ),
           ).thenAnswer((_) async => true);
 
@@ -164,6 +164,16 @@ void main() {
           await tester.pump();
           await tester.pumpAndSettle();
 
+          cartState.cartNotifier.setStatus(CartStatus.initial);
+          await tester.pump();
+          expect(find.byType(Container), findsOneWidget);
+
+          cartState.cartNotifier.setStatus(CartStatus.loading);
+          await tester.pump();
+          expect(find.byType(CoreProgressIndicator), findsOneWidget);
+
+          cartState.cartNotifier.setStatus(CartStatus.done);
+          await tester.pump();
           expect(find.byType(CartPaymentSuccess), findsOneWidget);
         },
       );

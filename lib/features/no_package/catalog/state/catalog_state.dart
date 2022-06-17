@@ -13,6 +13,10 @@ class CatalogState extends InheritedWidget {
   final CatalogRepository catalogRepository;
   final CartNotifier cartNotifier;
 
+  Future<List<Catalog>> fetch() async {
+    return await catalogRepository.fetch() ?? [];
+  }
+
   static CatalogState of(BuildContext context) =>
       context.dependOnInheritedWidgetOfExactType<CatalogState>()!;
 

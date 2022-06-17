@@ -12,7 +12,13 @@ class Badge extends StatelessWidget {
     return ValueListenableBuilder(
       valueListenable: cartNotifier,
       builder: (context, items, _) {
-        return CoreBadge(count: cartNotifier.items.length);
+        final count = cartNotifier.value.length;
+
+        if (count <= 0) {
+          return const SizedBox();
+        } else {
+          return CoreBadge(count: count);
+        }
       },
     );
   }

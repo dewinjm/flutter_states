@@ -1,3 +1,4 @@
+import 'dart:io' show Platform;
 import 'package:flutter/material.dart';
 import 'package:state_management/common/constant/constant.dart';
 
@@ -15,26 +16,40 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = Platform.isAndroid || Platform.isIOS;
+    final padding = isMobile ? 0.0 : Values.paddingSmall;
+
     return AppBar(
       title: Text(title),
       centerTitle: true,
       elevation: 0,
+      leading: IconButton(
+        key: const Key('_core_app_bar_back_button'),
+        onPressed: () => Navigator.of(context, rootNavigator: true).maybePop(),
+        icon: const Icon(
+          Icons.arrow_back_ios,
+          size: Values.iconSize,
+        ),
+      ),
       actions: [
-        IconButton(
-          key: const Key('_core_app_bar_button'),
-          onPressed: () => onPressed(),
-          icon: Stack(
-            children: [
-              const Icon(
-                Icons.shopping_cart_sharp,
-                size: Values.iconSize,
-              ),
-              Positioned(
-                top: 0,
-                right: 0,
-                child: badge,
-              ),
-            ],
+        Padding(
+          padding: EdgeInsets.all(padding),
+          child: IconButton(
+            key: const Key('_core_app_bar_button'),
+            onPressed: () => onPressed(),
+            icon: Stack(
+              children: [
+                const Icon(
+                  Icons.shopping_cart_sharp,
+                  size: Values.iconSize,
+                ),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  child: badge,
+                ),
+              ],
+            ),
           ),
         ),
       ],

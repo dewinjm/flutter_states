@@ -7,7 +7,7 @@ import 'package:state_management/features/no_package/no_package.dart';
 class _MockCatalogRepository extends Mock implements CatalogRepository {}
 
 void main() {
-  group('CatalogState InheritedWidget', () {
+  group('No Package: CatalogState InheritedWidget', () {
     late _MockCatalogRepository catalogRepository;
 
     setUp(() {
@@ -49,7 +49,7 @@ void main() {
 
       inner.cartNotifier.add(fakeCart);
 
-      expect(inner.cartNotifier.items.length, equals(1));
+      expect(inner.cartNotifier.value.length, equals(1));
       expect(inner.updateShouldNotify(inner), false);
     });
   });
