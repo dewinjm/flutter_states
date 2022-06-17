@@ -28,7 +28,6 @@ jobs:
         uses: VeryGoodOpenSource/very_good_coverage@v1
         with:
           path: './coverage/lcov.info'
-          min_coverage: 10
           exclude: '**/*_observer.dart **/change.dart'
       
       - name: ⬆️ Upload coverage to Codecov
