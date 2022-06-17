@@ -13,7 +13,7 @@ void main() {
     cartRepository = _MockCartRepository();
   });
 
-  group('CartState InheritedWidget', () {
+  group('No Package: CartState InheritedWidget', () {
     const fakeCart = Cart(
       item: Catalog(
           id: 1,
@@ -44,13 +44,13 @@ void main() {
 
         when(
           () => cartRepository.send(
-            cartItems: inner.cartNotifier.items,
+            cartItems: inner.cartNotifier.value,
           ),
         ).thenAnswer((_) async => true);
 
         await inner.process();
 
-        expect(inner.cartNotifier.items.length, equals(0));
+        expect(inner.cartNotifier.value.length, equals(0));
         expect(inner.updateShouldNotify(inner), false);
       },
     );

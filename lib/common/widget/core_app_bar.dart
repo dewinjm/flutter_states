@@ -24,6 +24,7 @@ class CoreAppBar extends StatelessWidget implements PreferredSizeWidget {
       centerTitle: true,
       elevation: 0,
       leading: IconButton(
+        key: const Key('_core_app_bar_back_button'),
         onPressed: () => Navigator.of(context, rootNavigator: true).maybePop(),
         icon: const Icon(
           Icons.arrow_back_ios,

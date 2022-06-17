@@ -14,7 +14,7 @@ class CatalogView extends StatelessWidget {
 
   Widget _builListOfCatalog(BuildContext context) {
     return FutureBuilder<List<Catalog>>(
-      future: CatalogState.of(context).catalogRepository.fetch(),
+      future: CatalogState.of(context).fetch(),
       builder: (context, snapshot) {
         if (snapshot.hasData) {
           return Column(

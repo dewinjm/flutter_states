@@ -14,11 +14,16 @@ class CartState extends InheritedWidget {
   final CartRepository cartRepository;
 
   Future<bool> process() async {
+    cartNotifier.setStatus(CartStatus.loading);
+
     final isSuccessful = await cartRepository.send(
-      cartItems: cartNotifier.items,
+      cartItems: cartNotifier.value,
     );
 
-    if (isSuccessful) cartNotifier.clear();
+    if (isSuccessful) {
+      cartNotifier.setStatus(CartStatus.done);
+      cartNotifier.clear();
+    }
     return isSuccessful;
   }
 

@@ -14,33 +14,41 @@ void main() {
     registerFallbackValue(FakeRoute());
   });
 
-  group('CartPaymentSuccess', () {
-    testWidgets('should renders', (tester) async {
+  group('CoreAppBar', () {
+    testWidgets('should render', (tester) async {
       await tester.pumpApp(
-        const Scaffold(
-          body: CartPaymentSuccess(),
+        CoreAppBar(
+          title: 'APP NAME',
+          badge: Container(),
+          onPressed: () {},
         ),
       );
 
-      expect(find.text('Payment success'), findsOneWidget);
-      expect(find.text('Thanks your!'), findsOneWidget);
+      expect(find.text('APP NAME'), findsOneWidget);
+      expect(find.byKey(const Key('_core_app_bar_button')), findsOneWidget);
     });
 
-    testWidgets('should navigate back when pressed ElevatedButton',
+    testWidgets('should navigate back when pressed leading IconButton',
         (tester) async {
       final mockObserver = MockNavigatorObserver();
       final key = GlobalKey<NavigatorState>();
 
-      await tester.pumpApp(
+      await tester.pumpWidget(
         MaterialApp(
           navigatorKey: key,
-          home: ElevatedButton(
-            onPressed: () => key.currentState!.push(
-              MaterialPageRoute<void>(
-                builder: (_) => const Scaffold(body: CartPaymentSuccess()),
+          home: Scaffold(
+            body: ElevatedButton(
+              onPressed: () => key.currentState!.push(
+                MaterialPageRoute<void>(
+                  builder: (_) => CoreAppBar(
+                    title: 'APP NAME',
+                    badge: Container(),
+                    onPressed: () {},
+                  ),
+                ),
               ),
+              child: const Text('button'),
             ),
-            child: const SizedBox(),
           ),
           navigatorObservers: [mockObserver],
         ),
@@ -51,16 +59,10 @@ void main() {
       await tester.pump();
       await tester.pumpAndSettle();
 
-      expect(find.byKey(const Key('_cart_payment_success_close_button')),
-          findsOneWidget);
-
-      await tester.tap(
-        find.byKey(const Key('_cart_payment_success_close_button')),
-      );
+      await tester.tap(find.byKey(const Key('_core_app_bar_back_button')));
       await tester.pump();
-      await tester.pumpAndSettle();
 
-      verify(() => mockObserver.didPop(any(), any())).called(2);
+      verify(() => mockObserver.didPop(any(), any())).called(1);
     });
   });
 }
