@@ -66,7 +66,7 @@ void main() {
       expect(find.byType(CoreBadge), findsNothing);
     });
 
-    testWidgets('should show badge when cart is empty', (tester) async {
+    testWidgets('should show badge when cart is not empty', (tester) async {
       final items = [Cart(item: fakeCatalog[0], count: 1)];
       await _pumpView(tester: tester, items: items);
       expect(find.byType(CoreBadge), findsOneWidget);
