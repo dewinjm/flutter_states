@@ -1,16 +1,14 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:state_management/features/riverpod/riverpod.dart';
 
 void main() {
-  group('description', () {
+  group('Riverpod: CatalogPage', () {
     testWidgets('should render', (tester) async {
       await tester.pumpWidget(
-        ProviderScope(
-          child: const MaterialApp(
+        const ProviderScope(
+          child: MaterialApp(
             debugShowCheckedModeBanner: false,
             home: CatalogPage(),
           ),
