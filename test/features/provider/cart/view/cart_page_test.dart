@@ -85,7 +85,7 @@ void main() {
       );
 
       testWidgets(
-        'should increase count when press increase button',
+        'should increase total when press increase button',
         (tester) async {
           await _pumpView(tester);
 
@@ -103,7 +103,7 @@ void main() {
       );
 
       testWidgets(
-        'should increase count when press decrease button',
+        'should decrease total when press decrease button',
         (tester) async {
           await _pumpView(tester);
 
