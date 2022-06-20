@@ -67,4 +67,8 @@ class CartStateNotifier extends StateNotifier<CartState> {
 
     return isSuccessful;
   }
+
+  void clear() {
+    state = state.copyWith(items: [], cartStatus: CartStatus.initial);
+  }
 }

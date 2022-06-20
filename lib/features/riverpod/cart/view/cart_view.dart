@@ -54,16 +54,17 @@ class CartView extends ConsumerWidget {
   }
 
   void _saveCart(BuildContext context, CartStateNotifier notifier) async {
-    _showDialog(context);
+    _showDialog(context, notifier);
     await notifier.process();
   }
 
-  void _showDialog(BuildContext context) async {
-    showDialog<CartDialog>(
+  void _showDialog(BuildContext context, CartStateNotifier notifier) async {
+    await showDialog<CartDialog>(
       context: context,
       useRootNavigator: false,
       barrierDismissible: false,
       builder: (BuildContext context) => const CartDialog(),
     );
+    notifier.clear();
   }
 }
