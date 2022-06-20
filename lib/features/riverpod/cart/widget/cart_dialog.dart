@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:state_management/common/common.dart';
-import 'package:state_management/features/provider/provider.dart';
+import 'package:state_management/features/riverpod/cart/cart.dart';
 
-class CartDialog extends StatelessWidget {
+class CartDialog extends ConsumerWidget {
   const CartDialog({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final cartState = ref.watch(cartStateNotifierProvider);
+
     return AlertDialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(
           Values.borderRadiusDouble,
         ),
       ),
-      content: Consumer<CartProvider>(
-        builder: ((context, value, child) {
-          switch (value.status) {
+      content: Builder(
+        builder: (context) {
+          switch (cartState.cartStatus) {
             case CartStatus.initial:
               return Container(height: 10);
             case CartStatus.loading:
@@ -23,7 +26,7 @@ class CartDialog extends StatelessWidget {
             case CartStatus.done:
               return const CartPaymentSuccess();
           }
-        }),
+        },
       ),
     );
   }
