@@ -4,6 +4,9 @@ import 'package:state_management/features/no_package/no_package.dart'
     as no_package;
 import 'package:state_management/features/provider/provider.dart' as provider;
 import 'package:state_management/features/riverpod/riverpod.dart' as riverpod;
+import 'package:state_management/features/flutter_bloc/flutter_bloc.dart'
+    as bloc;
+
 import 'package:state_management/home/widget/widget.dart';
 
 const options = ['No Package', 'Provider', 'Riverpod', 'Flutter Bloc'];
@@ -85,13 +88,13 @@ class HomePage extends StatelessWidget {
         page = const riverpod.MainView();
         break;
       case Option.flutterBloc:
+        page = bloc.MainView();
         break;
       default:
         page = const no_package.MainView();
         break;
     }
 
-    if (page == null) return;
     Navigator.push(context, MaterialPageRoute(builder: (context) => page!));
   }
 }
