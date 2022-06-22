@@ -7,7 +7,7 @@ import 'package:state_management/features/flutter_bloc/flutter_bloc.dart';
 class MockCartRepository extends Mock implements CartRepository {}
 
 void main() {
-  group('CartBloc', () {
+  group('Bloc: CartBloc', () {
     const cartItems = [
       Cart(
         item: Catalog(
@@ -142,6 +142,58 @@ void main() {
           () => cartRepository.send(cartItems: cartItems),
         ).called(1);
       },
+    );
+
+    blocTest<CartBloc, CartState>(
+      'emits [CartState] with status error'
+      'when CartRepository Send throws an error',
+      setUp: () {
+        when(() => cartRepository.send(cartItems: cartItems))
+            .thenThrow(Exception());
+      },
+      build: () => CartBloc(cartRepository: cartRepository),
+      seed: () => const CartState(
+        items: [...cartItems],
+        cartStatus: CartStatus.initial,
+        amount: 1,
+      ),
+      act: (bloc) => bloc.add(CartProcessed()),
+      expect: () => <CartState>[
+        const CartState(
+          items: cartItems,
+          cartStatus: CartStatus.loading,
+          amount: 1,
+        ),
+        const CartState(
+          items: cartItems,
+          cartStatus: CartStatus.error,
+          amount: 1,
+        ),
+      ],
+      verify: (_) {
+        verify(
+          () => cartRepository.send(cartItems: cartItems),
+        ).called(1);
+      },
+    );
+
+    blocTest<CartBloc, CartState>(
+      'emits [CartState] with status initial'
+      'when CartResetStatus is successfully',
+      build: () => CartBloc(cartRepository: cartRepository),
+      seed: () => const CartState(
+        items: [...cartItems],
+        cartStatus: CartStatus.initial,
+        amount: 1,
+      ),
+      act: (bloc) => bloc.add(CartResetStatus()),
+      expect: () => <CartState>[
+        const CartState(
+          items: [],
+          cartStatus: CartStatus.initial,
+          amount: 0,
+        ),
+      ],
     );
   });
 }

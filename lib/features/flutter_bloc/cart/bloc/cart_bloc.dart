@@ -70,11 +70,12 @@ class CartBloc extends Bloc<CartEvent, CartState> {
   void _onProcessed(CartProcessed event, Emitter<CartState> emit) async {
     emit(state.copyWith(cartStatus: CartStatus.loading));
 
-    final isSuccessful = await cartRepository.send(cartItems: state.items);
-
-    if (isSuccessful) {
-      emit(state.copyWith(items: [], cartStatus: CartStatus.done, amount: 0));
-    } else {
+    try {
+      final isSuccessful = await cartRepository.send(cartItems: state.items);
+      if (isSuccessful) {
+        emit(state.copyWith(items: [], cartStatus: CartStatus.done, amount: 0));
+      }
+    } catch (ex) {
       emit(state.copyWith(cartStatus: CartStatus.error));
     }
   }
