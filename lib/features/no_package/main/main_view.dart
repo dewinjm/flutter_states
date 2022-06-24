@@ -15,7 +15,7 @@ class _MainViewState extends State<MainView> {
   );
 
   final cartRepository = CartRepositoryImpl();
-  final cartNotifier = CartNotifier([]);
+  final cartNotifier = CartNotifier();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +36,7 @@ class _MainViewState extends State<MainView> {
             cartNotifier: cartNotifier,
             child: const CatalogPage(),
           ),
-      '/cart': (context) => CartState(
+      '/cart': (context) => CartProvider(
             cartNotifier: cartNotifier,
             cartRepository: cartRepository,
             child: const CartPage(),

@@ -1,38 +1,37 @@
-import 'package:flutter/widgets.dart';
-import 'package:state_management/common/cart/cart.dart';
-import 'package:state_management/features/no_package/cart/state/cart_notifier.dart';
+part of 'cart_provider.dart';
 
-class CartState extends InheritedWidget {
+enum CartStatus {
+  initial,
+  loading,
+  done,
+  error,
+}
+
+class CartState extends Equatable {
   const CartState({
-    required this.cartNotifier,
-    required this.cartRepository,
-    required Widget child,
-    Key? key,
-  }) : super(child: child, key: key);
+    required this.items,
+    required this.cartStatus,
+    required this.amount,
+  });
 
-  final CartNotifier cartNotifier;
-  final CartRepository cartRepository;
+  const CartState.initial()
+      : this(items: const [], cartStatus: CartStatus.initial, amount: 0.0);
 
-  Future<bool> process() async {
-    cartNotifier.setStatus(CartStatus.loading);
-
-    final isSuccessful = await cartRepository.send(
-      cartItems: cartNotifier.value,
-    );
-
-    if (isSuccessful) {
-      cartNotifier.setStatus(CartStatus.done);
-      cartNotifier.clear();
-    }
-    return isSuccessful;
-  }
-
-  static CartState of(BuildContext context) {
-    return context.dependOnInheritedWidgetOfExactType<CartState>()!;
-  }
+  final List<Cart> items;
+  final CartStatus cartStatus;
+  final double amount;
 
   @override
-  bool updateShouldNotify(covariant CartState oldWidget) {
-    return false;
-  }
+  List<Object> get props => [items, cartStatus, amount];
+
+  CartState copyWith({
+    List<Cart>? items,
+    CartStatus? cartStatus,
+    double? amount,
+  }) =>
+      CartState(
+        items: items ?? this.items,
+        cartStatus: cartStatus ?? this.cartStatus,
+        amount: amount ?? this.amount,
+      );
 }

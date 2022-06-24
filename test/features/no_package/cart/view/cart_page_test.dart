@@ -27,9 +27,9 @@ void main() {
     group('cart without items', () {
       testWidgets('should show CartEmpty widget when is empty', (tester) async {
         await tester.pumpApp(
-          CartState(
+          CartProvider(
             cartRepository: mockCartRepository,
-            cartNotifier: CartNotifier([]),
+            cartNotifier: CartNotifier(),
             child: const CartPage(),
           ),
         );
@@ -41,21 +41,22 @@ void main() {
     });
 
     group('cart with items', () {
-      late CartState cartState;
+      late CartProvider cartProvider;
 
       Future<void> _pumpView(WidgetTester tester) async {
         await tester.pumpApp(
-          CartState(
+          CartProvider(
             cartRepository: mockCartRepository,
-            cartNotifier: CartNotifier([]),
+            cartNotifier: CartNotifier(),
             child: Builder(
               builder: (BuildContext context) {
-                cartState = context.findAncestorWidgetOfExactType<CartState>()!;
+                cartProvider =
+                    context.findAncestorWidgetOfExactType<CartProvider>()!;
 
-                cartState.cartNotifier.add(
+                cartProvider.cartNotifier.add(
                   const Cart(item: fakeCatalogItem, count: 1),
                 );
-                cartState.cartNotifier.add(
+                cartProvider.cartNotifier.add(
                   const Cart(item: fakeCatalogItem, count: 1),
                 );
                 return const CartPage();
@@ -86,7 +87,7 @@ void main() {
           await tester.tap(find.byKey(key));
 
           expect(
-            cartState.cartNotifier.amount.toStringAsFixed(2),
+            cartProvider.cartNotifier.value.amount.toStringAsFixed(2),
             (6.30).toStringAsFixed(2),
           );
         },
@@ -103,7 +104,7 @@ void main() {
 
           await tester.tap(find.byKey(key));
 
-          expect(cartState.cartNotifier.amount, equals(2.10));
+          expect(cartProvider.cartNotifier.value.amount, equals(2.10));
         },
       );
 
@@ -119,40 +120,42 @@ void main() {
           await tester.ensureVisible(find.byKey(key));
           await tester.tap(find.byKey(key));
 
-          expect(cartState.cartNotifier.value, isEmpty);
+          expect(cartProvider.cartNotifier.value.items, isEmpty);
         },
       );
     });
 
     group('onPaymentPressed', () {
+      late CartProvider cartProvider;
+
+      Future<void> _pumpView(WidgetTester tester) async {
+        await tester.pumpApp(
+          CartProvider(
+            cartRepository: mockCartRepository,
+            cartNotifier: CartNotifier(),
+            child: Builder(
+              builder: (BuildContext context) {
+                cartProvider =
+                    context.findAncestorWidgetOfExactType<CartProvider>()!;
+
+                cartProvider.cartNotifier.add(
+                  const Cart(item: fakeCatalogItem, count: 1),
+                );
+                return const CartPage();
+              },
+            ),
+          ),
+        );
+      }
+
       testWidgets(
-        'should show dialog when payment button pressed',
+        'should show dialog when payment cart process is successfully',
         (tester) async {
-          late CartState cartState;
+          await _pumpView(tester);
+          final items = cartProvider.cartNotifier.value.items;
 
-          await tester.pumpApp(
-            CartState(
-              cartRepository: mockCartRepository,
-              cartNotifier: CartNotifier([]),
-              child: Builder(
-                builder: (BuildContext context) {
-                  cartState =
-                      context.findAncestorWidgetOfExactType<CartState>()!;
-
-                  cartState.cartNotifier.add(
-                    const Cart(item: fakeCatalogItem, count: 1),
-                  );
-                  return const CartPage();
-                },
-              ),
-            ),
-          );
-
-          when(
-            () => mockCartRepository.send(
-              cartItems: cartState.cartNotifier.value,
-            ),
-          ).thenAnswer((_) async => true);
+          when(() => mockCartRepository.send(cartItems: items))
+              .thenAnswer((_) async => true);
 
           expect(find.text('PAYOUT'), findsOneWidget);
           expect(find.byType(CartPayment), findsOneWidget);
@@ -164,17 +167,36 @@ void main() {
           await tester.pump();
           await tester.pumpAndSettle();
 
-          cartState.cartNotifier.setStatus(CartStatus.initial);
-          await tester.pump();
-          expect(find.byType(Container), findsOneWidget);
+          expect(find.byType(CartDialog), findsOneWidget);
 
-          cartState.cartNotifier.setStatus(CartStatus.loading);
+          await tester.tap(
+            find.byKey(const Key('_cart_payment_success_close_button')),
+          );
           await tester.pump();
-          expect(find.byType(CoreProgressIndicator), findsOneWidget);
+          await tester.pumpAndSettle();
 
-          cartState.cartNotifier.setStatus(CartStatus.done);
+          verify(() => mockCartRepository.send(cartItems: items)).called(1);
+        },
+      );
+
+      testWidgets(
+        'should return status error when cart process throws an error',
+        (tester) async {
+          await _pumpView(tester);
+
+          final items = cartProvider.cartNotifier.value.items;
+          when(() => mockCartRepository.send(cartItems: items)).thenThrow(
+            Exception(),
+          );
+
+          await tester.tap(find.byKey(const Key('_cart_payment_button')));
           await tester.pump();
-          expect(find.byType(CartPaymentSuccess), findsOneWidget);
+          await tester.pumpAndSettle();
+
+          expect(
+            cartProvider.cartNotifier.value.cartStatus,
+            equals(CartStatus.error),
+          );
         },
       );
     });

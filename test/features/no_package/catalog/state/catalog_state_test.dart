@@ -28,7 +28,7 @@ void main() {
         (WidgetTester tester) async {
       final GlobalKey globalKey = GlobalKey();
 
-      final CartNotifier notifier = CartNotifier([]);
+      final CartNotifier notifier = CartNotifier();
       late CatalogState inner;
 
       final Widget widget = Container(
@@ -49,7 +49,7 @@ void main() {
 
       inner.cartNotifier.add(fakeCart);
 
-      expect(inner.cartNotifier.value.length, equals(1));
+      expect(inner.cartNotifier.value.items.length, equals(1));
       expect(inner.updateShouldNotify(inner), false);
     });
   });

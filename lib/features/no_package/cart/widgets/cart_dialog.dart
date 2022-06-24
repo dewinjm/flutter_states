@@ -3,8 +3,8 @@ import 'package:state_management/common/common.dart';
 import 'package:state_management/features/no_package/no_package.dart';
 
 class CartDialog extends StatelessWidget {
-  const CartDialog({required this.cartState, Key? key}) : super(key: key);
-  final CartState cartState;
+  const CartDialog({required this.cartProvider, Key? key}) : super(key: key);
+  final CartProvider cartProvider;
 
   @override
   Widget build(BuildContext context) {
@@ -15,15 +15,17 @@ class CartDialog extends StatelessWidget {
         ),
       ),
       content: ValueListenableBuilder(
-        valueListenable: cartState.cartNotifier,
+        valueListenable: cartProvider.cartNotifier,
         builder: (context, items, _) {
-          switch (cartState.cartNotifier.status) {
+          switch (cartProvider.cartNotifier.value.cartStatus) {
             case CartStatus.initial:
               return Container(height: 10);
             case CartStatus.loading:
               return _buildProgress();
             case CartStatus.done:
               return const CartPaymentSuccess();
+            default:
+              return Container(height: 10);
           }
         },
       ),
