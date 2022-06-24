@@ -11,10 +11,19 @@ class MockCartRepository extends Mock implements CartRepository {}
 void main() {
   late MockCatalogRepository catalogRepository;
   late MockCartRepository cartRepository;
+  late CatalogState catalogState;
+  late CartService cartService;
 
   setUp(() {
     catalogRepository = MockCatalogRepository();
     cartRepository = MockCartRepository();
+    cartService = CartServiceImpl();
+
+    catalogState = CatalogState(
+      catalogRepository: catalogRepository,
+      cartNotifier: CartNotifier(cartService: cartService),
+      child: const CatalogPage(),
+    );
   });
 
   group('No Package: CatalogPage ', () {
@@ -35,21 +44,14 @@ void main() {
       ),
     ];
 
-    Future<void> _pumpView({
-      required WidgetTester tester,
-      List<Cart>? items,
-    }) async {
+    Future<void> _pumpView({required WidgetTester tester}) async {
       await tester.pumpWidget(
         MaterialApp(
           initialRoute: '/',
           routes: {
-            '/': (context) => CatalogState(
-                  catalogRepository: catalogRepository,
-                  cartNotifier: CartNotifier(items ?? []),
-                  child: const CatalogPage(),
-                ),
-            '/cart': (context) => CartState(
-                  cartNotifier: CartNotifier(items ?? []),
+            '/': (context) => catalogState,
+            '/cart': (context) => CartProvider(
+                  cartNotifier: CartNotifier(cartService: cartService),
                   cartRepository: cartRepository,
                   child: const CartPage(),
                 ),
@@ -72,9 +74,9 @@ void main() {
     });
 
     testWidgets('should show badge when cart is not empty', (tester) async {
-      final items = [Cart(item: fakeCatalog[0], count: 1)];
+      catalogState.cartNotifier.add(Cart(item: fakeCatalog[0], count: 1));
 
-      await _pumpView(tester: tester, items: items);
+      await _pumpView(tester: tester);
       expect(find.byType(CoreBadge), findsOneWidget);
     });
 
@@ -91,21 +93,21 @@ void main() {
 
     testWidgets('should add item on cart when press add item button',
         (tester) async {
-      final cart = Cart(item: fakeCatalog[0], count: 10);
-      final items = [cart, cart];
-
       when((() => catalogRepository.fetch())).thenAnswer(
         ((_) async => fakeCatalog),
       );
 
-      await _pumpView(tester: tester, items: items);
+      catalogState.cartNotifier.add(Cart(item: fakeCatalog[0], count: 1));
+      catalogState.cartNotifier.add(Cart(item: fakeCatalog[1], count: 1));
+
+      await _pumpView(tester: tester);
 
       await tester.pump(const Duration(seconds: 1));
 
       expect(find.byType(CatalogItem), findsWidgets);
       expect(find.byType(CatalogItemBase), findsWidgets);
 
-      const key = Key('_core_catalog_item_2');
+      const key = Key('_core_catalog_item_1');
       expect(find.byKey(key), findsOneWidget);
 
       await tester.ensureVisible(find.byKey(key));
@@ -113,7 +115,7 @@ void main() {
       await tester.pump();
 
       final badge = tester.widget<CoreBadge>(find.byType(CoreBadge));
-      expect(badge.count, equals(3));
+      expect(badge.count, equals(2));
     });
   });
 }

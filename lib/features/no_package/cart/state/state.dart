@@ -1,2 +1,1 @@
-export 'cart_notifier.dart';
-export 'cart_state.dart';
+export 'cart_provider.dart';

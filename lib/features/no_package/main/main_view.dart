@@ -9,13 +9,14 @@ class MainView extends StatefulWidget {
   State<MainView> createState() => _MainViewState();
 }
 
-class _MainViewState extends State<MainView> {
-  final catalogRepository = CatalogRepositoryImpl(
-    dataSource: CatalogDataSourceImpl(),
-  );
+final cartService = CartServiceImpl();
+final catalogRepository = CatalogRepositoryImpl(
+  dataSource: CatalogDataSourceImpl(),
+);
+final cartRepository = CartRepositoryImpl();
 
-  final cartRepository = CartRepositoryImpl();
-  final cartNotifier = CartNotifier([]);
+class _MainViewState extends State<MainView> {
+  final cartNotifier = CartNotifier(cartService: cartService);
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +37,7 @@ class _MainViewState extends State<MainView> {
             cartNotifier: cartNotifier,
             child: const CatalogPage(),
           ),
-      '/cart': (context) => CartState(
+      '/cart': (context) => CartProvider(
             cartNotifier: cartNotifier,
             cartRepository: cartRepository,
             child: const CartPage(),

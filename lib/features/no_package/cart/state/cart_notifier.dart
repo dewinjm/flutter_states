@@ -1,85 +1,58 @@
-import 'package:flutter/material.dart';
-import 'package:state_management/common/cart/cart.dart';
+part of 'cart_provider.dart';
 
-enum CartStatus {
-  initial,
-  loading,
-  done,
-}
+class CartNotifier extends ValueNotifier<CartState> {
+  CartNotifier({required this.cartService}) : super(const CartState.initial());
 
-class CartNotifier extends ValueNotifier<List<Cart>> {
-  CartNotifier(super.value);
-
-  double _amount = 0;
-  double get amount => _amount;
-
-  CartStatus status = CartStatus.initial;
+  final CartService cartService;
 
   void add(Cart cart) {
-    if (value.where((e) => e.item.id == cart.item.id).isNotEmpty) {
-      final index = value.indexWhere((e) => e.item == cart.item);
-      final item = value[index];
-      final count = item.count + 1;
-
-      value[index] = item.copyWith(
-        count: count,
-        amount: (item.item.price * count),
-      );
-    } else {
-      value.add(Cart(item: cart.item, count: 1, amount: cart.item.price));
-    }
-
-    _calculateAmount();
+    final items = cartService.addOrUpdateItem(cart, value.items);
+    value = value.copyWith(items: items, amount: _calculateAmount(items));
     notifyListeners();
   }
 
   void decrease(Cart cart) {
-    final index = value.indexWhere((e) => e.item == cart.item);
-    final item = value[index];
-    final count = item.count - 1;
-
-    value[index] = item.copyWith(
-      count: count,
-      amount: (item.item.price * count),
-    );
-
-    _calculateAmount();
+    final items = cartService.decreaseItemCount(cart, value.items);
+    value = value.copyWith(items: items, amount: _calculateAmount(items));
     notifyListeners();
   }
 
   void remove(Cart cart) {
-    if (value.contains(cart)) {
-      value.remove(cart);
+    final items = cartService.removeItem(cart, value.items);
+    value = value.copyWith(items: items, amount: _calculateAmount(items));
+    notifyListeners();
+  }
+
+  double _calculateAmount(List<Cart> items) {
+    return cartService.calculateAmount(items);
+  }
+
+  Future<void> process(CartRepository cartRepository) async {
+    value = value.copyWith(cartStatus: CartStatus.loading);
+    notifyListeners();
+
+    try {
+      final isSuccessful = await cartRepository.send(cartItems: value.items);
+      if (isSuccessful) {
+        value = value.copyWith(
+          items: [],
+          cartStatus: CartStatus.done,
+          amount: 0,
+        );
+        notifyListeners();
+      }
+    } catch (ex) {
+      value = value.copyWith(cartStatus: CartStatus.error);
+      notifyListeners();
     }
-
-    _calculateAmount();
-    notifyListeners();
-  }
-
-  void _calculateAmount() {
-    if (value.isEmpty) {
-      _amount = 0;
-      return;
-    }
-
-    _amount = value
-        .map((item) => item.amount ?? 0)
-        .reduce((value, current) => value + current);
-  }
-
-  void clear() {
-    value.clear();
-    _amount = 0;
-    notifyListeners();
-  }
-
-  void setStatus(CartStatus status) {
-    this.status = status;
-    notifyListeners();
   }
 
   void resetStatus() {
-    status == CartStatus.initial;
+    value = value.copyWith(
+      items: [],
+      cartStatus: CartStatus.initial,
+      amount: 0,
+    );
     notifyListeners();
   }
 }

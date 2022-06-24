@@ -10,21 +10,21 @@ class CartView extends StatefulWidget {
 }
 
 class _CartViewState extends State<CartView> {
-  late CartState cartState;
+  late CartProvider cartProvider;
 
   @override
   Widget build(BuildContext context) {
-    cartState = CartState.of(context);
-    final cartNotifier = cartState.cartNotifier;
+    cartProvider = CartProvider.of(context);
+    final cartNotifier = cartProvider.cartNotifier;
 
     return ValueListenableBuilder(
       valueListenable: cartNotifier,
       builder: (context, items, _) {
-        if (cartNotifier.value.isEmpty) return const CartEmpty();
+        if (cartNotifier.value.items.isEmpty) return const CartEmpty();
 
         return CartContainer(
           listOfCart: Column(
-            children: cartNotifier.value
+            children: cartNotifier.value.items
                 .asMap()
                 .entries
                 .map((entry) => CartItem(
@@ -36,7 +36,7 @@ class _CartViewState extends State<CartView> {
                     ))
                 .toList(),
           ),
-          amout: cartNotifier.amount,
+          amout: cartNotifier.value.amount,
           onPaymentPressed: () => _saveCart(),
         );
       },
@@ -46,32 +46,31 @@ class _CartViewState extends State<CartView> {
   void _onPressedItemOption(CartItemOption option, Cart cart) {
     switch (option) {
       case CartItemOption.increase:
-        cartState.cartNotifier.add(cart);
+        cartProvider.cartNotifier.add(cart);
         break;
       case CartItemOption.decrease:
-        cartState.cartNotifier.decrease(cart);
+        cartProvider.cartNotifier.decrease(cart);
         break;
       case CartItemOption.remove:
-        cartState.cartNotifier.remove(cart);
+        cartProvider.cartNotifier.remove(cart);
         break;
     }
   }
 
   void _saveCart() async {
     _showDialog();
-
-    final isSuccessful = await cartState.process();
-    if (isSuccessful) cartState.cartNotifier.resetStatus();
+    await cartProvider.process();
   }
 
   void _showDialog() async {
-    showDialog<CartDialog>(
+    await showDialog<CartDialog>(
       context: context,
       barrierDismissible: false,
       useRootNavigator: false,
       builder: (BuildContext context) => CartDialog(
-        cartState: cartState,
+        cartProvider: cartProvider,
       ),
     );
+    cartProvider.cartNotifier.resetStatus();
   }
 }
