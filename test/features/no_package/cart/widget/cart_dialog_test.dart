@@ -8,9 +8,11 @@ class MockCartRepository extends Mock implements CartRepository {}
 
 void main() {
   late MockCartRepository cartRepository;
+  late CartService cartService;
 
   setUp(() {
     cartRepository = MockCartRepository();
+    cartService = CartServiceImpl();
   });
 
   group('No package: CartDialog', () {
@@ -21,7 +23,7 @@ void main() {
         MaterialApp(
           home: CartProvider(
             cartRepository: cartRepository,
-            cartNotifier: CartNotifier(),
+            cartNotifier: CartNotifier(cartService: cartService),
             child: Builder(
               builder: (BuildContext context) {
                 cartProvider =

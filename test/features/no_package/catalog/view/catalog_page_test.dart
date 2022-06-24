@@ -12,14 +12,16 @@ void main() {
   late MockCatalogRepository catalogRepository;
   late MockCartRepository cartRepository;
   late CatalogState catalogState;
+  late CartService cartService;
 
   setUp(() {
     catalogRepository = MockCatalogRepository();
     cartRepository = MockCartRepository();
+    cartService = CartServiceImpl();
 
     catalogState = CatalogState(
       catalogRepository: catalogRepository,
-      cartNotifier: CartNotifier(),
+      cartNotifier: CartNotifier(cartService: cartService),
       child: const CatalogPage(),
     );
   });
@@ -49,7 +51,7 @@ void main() {
           routes: {
             '/': (context) => catalogState,
             '/cart': (context) => CartProvider(
-                  cartNotifier: CartNotifier(),
+                  cartNotifier: CartNotifier(cartService: cartService),
                   cartRepository: cartRepository,
                   child: const CartPage(),
                 ),

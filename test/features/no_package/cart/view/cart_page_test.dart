@@ -10,9 +10,11 @@ class _MockCartRepository extends Mock implements CartRepository {}
 
 void main() {
   late _MockCartRepository mockCartRepository;
+  late CartService cartService;
 
   setUp(() {
     mockCartRepository = _MockCartRepository();
+    cartService = CartServiceImpl();
   });
 
   group('No Package: CartPage', () {
@@ -29,7 +31,7 @@ void main() {
         await tester.pumpApp(
           CartProvider(
             cartRepository: mockCartRepository,
-            cartNotifier: CartNotifier(),
+            cartNotifier: CartNotifier(cartService: cartService),
             child: const CartPage(),
           ),
         );
@@ -47,7 +49,7 @@ void main() {
         await tester.pumpApp(
           CartProvider(
             cartRepository: mockCartRepository,
-            cartNotifier: CartNotifier(),
+            cartNotifier: CartNotifier(cartService: cartService),
             child: Builder(
               builder: (BuildContext context) {
                 cartProvider =
@@ -99,11 +101,10 @@ void main() {
           await _pumpView(tester);
 
           const key = Key('_cart_item_decrease');
-
           expect(find.byKey(key), findsOneWidget);
 
           await tester.tap(find.byKey(key));
-
+          await tester.pumpAndSettle();
           expect(cartProvider.cartNotifier.value.amount, equals(2.10));
         },
       );
@@ -132,7 +133,7 @@ void main() {
         await tester.pumpApp(
           CartProvider(
             cartRepository: mockCartRepository,
-            cartNotifier: CartNotifier(),
+            cartNotifier: CartNotifier(cartService: cartService),
             child: Builder(
               builder: (BuildContext context) {
                 cartProvider =

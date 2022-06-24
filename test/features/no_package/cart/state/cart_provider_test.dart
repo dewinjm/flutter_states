@@ -6,11 +6,15 @@ import 'package:state_management/features/no_package/cart/cart.dart';
 
 class _MockCartRepository extends Mock implements CartRepository {}
 
+class _MockCartService extends Mock implements CartService {}
+
 void main() {
   late _MockCartRepository cartRepository;
+  late _MockCartService cartService;
 
   setUp(() {
     cartRepository = _MockCartRepository();
+    cartService = _MockCartService();
   });
 
   group('No Package: CartState InheritedWidget', () {
@@ -21,7 +25,7 @@ void main() {
 
         final Widget widget = CartProvider(
           cartRepository: cartRepository,
-          cartNotifier: CartNotifier(),
+          cartNotifier: CartNotifier(cartService: cartService),
           child: Builder(
             builder: (BuildContext context) {
               inner =
