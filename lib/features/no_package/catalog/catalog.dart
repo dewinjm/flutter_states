@@ -1,3 +1,3 @@
 export 'view/view.dart';
-export 'state/state.dart';
+export 'provider/provider.dart';
 export 'widget/widget.dart';

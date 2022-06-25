@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/common/common.dart';
-import 'package:state_management/features/no_package/catalog/state/state.dart';
+import 'package:state_management/features/no_package/no_package.dart';
 
 class CatalogItem extends StatelessWidget {
   const CatalogItem({required this.catalog, Key? key}) : super(key: key);
@@ -9,7 +9,7 @@ class CatalogItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cartNotifier = CatalogState.of(context).cartNotifier;
+    final cartNotifier = CatalogProvider.of(context).cartNotifier;
 
     return CatalogItemBase(
       key: Key('_item_${catalog.id.toString()}'),

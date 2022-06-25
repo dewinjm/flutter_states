@@ -17,7 +17,7 @@ void main() {
       await tester.pumpWidget(const MainView());
       await tester.pump(const Duration(seconds: 1));
 
-      expect(find.byType(CatalogState), findsOneWidget);
+      expect(find.byType(CatalogProvider), findsOneWidget);
       expect(find.byType(CatalogPage), findsOneWidget);
 
       await tester.tap(find.byKey(const Key('_core_app_bar_button')));
