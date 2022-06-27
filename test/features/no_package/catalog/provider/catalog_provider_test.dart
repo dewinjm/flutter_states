@@ -7,7 +7,7 @@ import 'package:state_management/features/no_package/no_package.dart';
 class _MockCatalogRepository extends Mock implements CatalogRepository {}
 
 void main() {
-  group('No Package: CatalogState InheritedWidget', () {
+  group('No Package: CatalogProvider InheritedWidget', () {
     late _MockCatalogRepository catalogRepository;
     late CartService cartService;
 
