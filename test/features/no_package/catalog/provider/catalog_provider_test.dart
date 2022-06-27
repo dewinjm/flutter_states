@@ -7,7 +7,7 @@ import 'package:state_management/features/no_package/no_package.dart';
 class _MockCatalogRepository extends Mock implements CatalogRepository {}
 
 void main() {
-  group('No Package: CatalogState InheritedWidget', () {
+  group('No Package: CatalogProvider InheritedWidget', () {
     late _MockCatalogRepository catalogRepository;
     late CartService cartService;
 
@@ -31,16 +31,16 @@ void main() {
       final GlobalKey globalKey = GlobalKey();
 
       final CartNotifier notifier = CartNotifier(cartService: cartService);
-      late CatalogState inner;
+      late CatalogProvider inner;
 
       final Widget widget = Container(
         key: globalKey,
-        child: CatalogState(
+        child: CatalogProvider(
           catalogRepository: catalogRepository,
           cartNotifier: notifier,
           child: Builder(
             builder: (BuildContext context) {
-              inner = context.findAncestorWidgetOfExactType<CatalogState>()!;
+              inner = context.findAncestorWidgetOfExactType<CatalogProvider>()!;
 
               return Container();
             },

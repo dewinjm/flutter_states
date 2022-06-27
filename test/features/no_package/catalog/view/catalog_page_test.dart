@@ -11,7 +11,7 @@ class MockCartRepository extends Mock implements CartRepository {}
 void main() {
   late MockCatalogRepository catalogRepository;
   late MockCartRepository cartRepository;
-  late CatalogState catalogState;
+  late CatalogProvider catalogState;
   late CartService cartService;
 
   setUp(() {
@@ -19,7 +19,7 @@ void main() {
     cartRepository = MockCartRepository();
     cartService = CartServiceImpl();
 
-    catalogState = CatalogState(
+    catalogState = CatalogProvider(
       catalogRepository: catalogRepository,
       cartNotifier: CartNotifier(cartService: cartService),
       child: const CatalogPage(),

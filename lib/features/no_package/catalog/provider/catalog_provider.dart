@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:state_management/common/catalog/catalog.dart';
-import 'package:state_management/features/no_package/cart/cart.dart';
+import 'package:state_management/features/no_package/no_package.dart';
 
-class CatalogState extends InheritedWidget {
-  const CatalogState({
+class CatalogProvider extends InheritedWidget {
+  const CatalogProvider({
     required this.catalogRepository,
     required this.cartNotifier,
     required super.child,
@@ -17,8 +17,8 @@ class CatalogState extends InheritedWidget {
     return await catalogRepository.fetch() ?? [];
   }
 
-  static CatalogState of(BuildContext context) =>
-      context.dependOnInheritedWidgetOfExactType<CatalogState>()!;
+  static CatalogProvider of(BuildContext context) =>
+      context.dependOnInheritedWidgetOfExactType<CatalogProvider>()!;
 
   @override
   bool updateShouldNotify(covariant InheritedWidget oldWidget) => false;

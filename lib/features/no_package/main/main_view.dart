@@ -32,7 +32,7 @@ class _MainViewState extends State<MainView> {
 
   Map<String, WidgetBuilder> routes() {
     return {
-      '/': (context) => CatalogState(
+      '/': (context) => CatalogProvider(
             catalogRepository: catalogRepository,
             cartNotifier: cartNotifier,
             child: const CatalogPage(),
