@@ -17,7 +17,7 @@ void main() {
     cartService = _MockCartService();
   });
 
-  group('No Package: CartState InheritedWidget', () {
+  group('No Package: CartProvider InheritedWidget', () {
     testWidgets(
       'Update inherited when change state',
       (WidgetTester tester) async {
