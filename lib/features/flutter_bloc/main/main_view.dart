@@ -8,6 +8,7 @@ class MainView extends StatelessWidget {
 
   final CatalogDataSource catalogDataSource = CatalogDataSourceImpl();
   final CartRepository cartRepository = CartRepositoryImpl();
+  final CartService cartService = CartServiceImpl();
 
   @override
   Widget build(BuildContext context) {
@@ -23,6 +24,7 @@ class MainView extends StatelessWidget {
         BlocProvider(
           create: (_) => CartBloc(
             cartRepository: cartRepository,
+            cartService: cartService,
           ),
         ),
       ],
