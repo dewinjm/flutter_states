@@ -8,13 +8,13 @@ class CatalogBadge extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Consumer<CartProvider>(
-      builder: (context, state, child) {
-        final count = state.items.length;
+      builder: (context, provider, child) {
+        final count = provider.state.items.length;
 
         if (count <= 0) {
           return const SizedBox();
         } else {
-          return CoreBadge(count: state.items.length);
+          return CoreBadge(count: provider.state.items.length);
         }
       },
     );

@@ -14,14 +14,14 @@ class CartDialog extends StatelessWidget {
         ),
       ),
       content: Consumer<CartProvider>(
-        builder: ((context, value, child) {
-          switch (value.status) {
-            case CartStatus.initial:
-              return Container(height: 10);
+        builder: ((context, provider, child) {
+          switch (provider.state.cartStatus) {
             case CartStatus.loading:
               return _buildProgress();
             case CartStatus.done:
               return const CartPaymentSuccess();
+            default:
+              return Container(height: 10);
           }
         }),
       ),

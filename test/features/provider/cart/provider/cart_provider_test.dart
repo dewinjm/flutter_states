@@ -9,10 +9,15 @@ class MockCartRepository extends Mock implements CartRepository {}
 void main() {
   late MockCartRepository cartRepository;
   late CartProvider cartProvider;
+  late CartService cartService;
 
   setUp(() {
     cartRepository = MockCartRepository();
-    cartProvider = CartProvider(cartRepository: cartRepository);
+    cartService = CartServiceImpl();
+    cartProvider = CartProvider(
+      cartRepository: cartRepository,
+      cartService: cartService,
+    );
   });
 
   group('Provider: CartProvider', () {
@@ -47,9 +52,9 @@ void main() {
             ),
           ],
           child: Consumer<CartProvider>(
-            builder: (_, value, __) {
+            builder: (_, provider, __) {
               return Text(
-                value.amount.toString(),
+                provider.state.amount.toString(),
                 textDirection: TextDirection.ltr,
               );
             },
@@ -65,13 +70,13 @@ void main() {
       await tester.pump();
 
       expect(find.text('50.0'), findsOneWidget);
-      expect(cartProvider.amount, equals(50.0));
+      expect(cartProvider.state.amount, equals(50.0));
 
       cartProvider.add(fakeCart2);
       await tester.pump();
 
-      expect(cartProvider.amount, equals(75.0));
-      expect(cartProvider.items.length, equals(2));
+      expect(cartProvider.state.amount, equals(75.0));
+      expect(cartProvider.state.items.length, equals(2));
     });
 
     testWidgets(
@@ -85,8 +90,8 @@ void main() {
         await tester.pump();
 
         expect(find.text('25.0'), findsOneWidget);
-        expect(cartProvider.amount, equals(25.0));
-        expect(cartProvider.items.length, equals(1));
+        expect(cartProvider.state.amount, equals(25.0));
+        expect(cartProvider.state.items.length, equals(1));
       },
     );
 
@@ -97,11 +102,11 @@ void main() {
 
         cartProvider.add(fakeCart1);
         await tester.pump();
-        cartProvider.remove(cartProvider.items.first);
+        cartProvider.remove(cartProvider.state.items.first);
         await tester.pump();
 
-        expect(cartProvider.amount, equals(0.0));
-        expect(cartProvider.items.length, equals(0));
+        expect(cartProvider.state.amount, equals(0.0));
+        expect(cartProvider.state.items.length, equals(0));
       },
     );
 
@@ -111,13 +116,30 @@ void main() {
         await _pumpView(tester);
 
         when(
-          () => cartRepository.send(cartItems: cartProvider.items),
+          () => cartRepository.send(cartItems: cartProvider.state.items),
         ).thenAnswer((_) async => true);
 
         cartProvider.process();
-        await tester.pump();
 
-        expect(cartProvider.status, equals(CartStatus.done));
+        await tester.pump();
+        expect(cartProvider.state.cartStatus, equals(CartStatus.done));
+      },
+    );
+
+    testWidgets(
+      'should return status error'
+      'when CartRepository Send throws an error',
+      (tester) async {
+        await _pumpView(tester);
+
+        when(
+          () => cartRepository.send(cartItems: cartProvider.state.items),
+        ).thenThrow(Exception());
+
+        cartProvider.process();
+
+        await tester.pump();
+        expect(cartProvider.state.cartStatus, equals(CartStatus.error));
       },
     );
 
@@ -125,11 +147,10 @@ void main() {
       'should have initial status when call reset function',
       (tester) async {
         await _pumpView(tester);
-
         cartProvider.resetStatus();
-        await tester.pump();
 
-        expect(cartProvider.status, equals(CartStatus.initial));
+        await tester.pump();
+        expect(cartProvider.state.cartStatus, equals(CartStatus.initial));
       },
     );
   });

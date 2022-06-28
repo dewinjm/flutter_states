@@ -7,6 +7,8 @@ import 'package:state_management/features/flutter_bloc/flutter_bloc.dart';
 class MockCartRepository extends Mock implements CartRepository {}
 
 void main() {
+  late CartService cartService;
+
   group('Bloc: CartBloc', () {
     const cartItems = [
       Cart(
@@ -38,11 +40,15 @@ void main() {
 
     setUp(() {
       cartRepository = MockCartRepository();
+      cartService = CartServiceImpl();
     });
 
     test('initial state', () {
       expect(
-        CartBloc(cartRepository: cartRepository).state,
+        CartBloc(
+          cartRepository: cartRepository,
+          cartService: cartService,
+        ).state,
         const CartState.initial(),
       );
     });
@@ -50,7 +56,10 @@ void main() {
     blocTest<CartBloc, CartState>(
       'emits [CartState] with items and amount value'
       'when item is added successfully',
-      build: () => CartBloc(cartRepository: cartRepository),
+      build: () => CartBloc(
+        cartRepository: cartRepository,
+        cartService: cartService,
+      ),
       seed: () => const CartState(
         items: cartItems,
         cartStatus: CartStatus.initial,
@@ -77,7 +86,10 @@ void main() {
     blocTest<CartBloc, CartState>(
       'emits [CartState] with items and amount value'
       'when item count is decreased',
-      build: () => CartBloc(cartRepository: cartRepository),
+      build: () => CartBloc(
+        cartRepository: cartRepository,
+        cartService: cartService,
+      ),
       seed: () => CartState(
         items: [mockItemToAdd.copyWith(count: 2, amount: 4)],
         cartStatus: CartStatus.initial,
@@ -95,7 +107,10 @@ void main() {
 
     blocTest<CartBloc, CartState>(
       'emits [CartState] when item is removed successfully',
-      build: () => CartBloc(cartRepository: cartRepository),
+      build: () => CartBloc(
+        cartRepository: cartRepository,
+        cartService: cartService,
+      ),
       seed: () => const CartState(
         items: [...cartItems, mockItemToAdd],
         cartStatus: CartStatus.initial,
@@ -118,7 +133,10 @@ void main() {
         when(() => cartRepository.send(cartItems: cartItems))
             .thenAnswer((_) async => true);
       },
-      build: () => CartBloc(cartRepository: cartRepository),
+      build: () => CartBloc(
+        cartRepository: cartRepository,
+        cartService: cartService,
+      ),
       seed: () => const CartState(
         items: [...cartItems],
         cartStatus: CartStatus.initial,
@@ -151,7 +169,10 @@ void main() {
         when(() => cartRepository.send(cartItems: cartItems))
             .thenThrow(Exception());
       },
-      build: () => CartBloc(cartRepository: cartRepository),
+      build: () => CartBloc(
+        cartRepository: cartRepository,
+        cartService: cartService,
+      ),
       seed: () => const CartState(
         items: [...cartItems],
         cartStatus: CartStatus.initial,
@@ -180,7 +201,10 @@ void main() {
     blocTest<CartBloc, CartState>(
       'emits [CartState] with status initial'
       'when CartResetStatus is successfully',
-      build: () => CartBloc(cartRepository: cartRepository),
+      build: () => CartBloc(
+        cartRepository: cartRepository,
+        cartService: cartService,
+      ),
       seed: () => const CartState(
         items: [...cartItems],
         cartStatus: CartStatus.initial,
