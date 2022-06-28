@@ -18,13 +18,13 @@ class _CartViewState extends State<CartView> {
 
     return Consumer<CartProvider>(
       builder: (context, provider, child) {
-        if (provider.items.isEmpty) {
+        if (provider.state.items.isEmpty) {
           return const CartEmpty();
         }
 
         return CartContainer(
           listOfCart: Column(
-            children: provider.items
+            children: provider.state.items
                 .asMap()
                 .entries
                 .map((entry) => CartItem(
@@ -35,7 +35,7 @@ class _CartViewState extends State<CartView> {
                     ))
                 .toList(),
           ),
-          amout: provider.amount,
+          amout: provider.state.amount,
           onPaymentPressed: () => _saveCart(),
         );
       },
@@ -58,16 +58,17 @@ class _CartViewState extends State<CartView> {
 
   void _saveCart() async {
     _showDialog();
-    final isSuccesful = await cartProvider.process();
-    if (isSuccesful) cartProvider.resetStatus();
+    await cartProvider.process();
   }
 
   void _showDialog() async {
-    showDialog<CartDialog>(
+    await showDialog<CartDialog>(
       context: context,
       useRootNavigator: false,
       barrierDismissible: false,
       builder: (BuildContext context) => const CartDialog(),
     );
+
+    cartProvider.resetStatus();
   }
 }

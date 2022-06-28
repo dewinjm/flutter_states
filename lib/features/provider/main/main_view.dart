@@ -12,14 +12,20 @@ class MainView extends StatelessWidget {
     );
 
     final cartRepository = CartRepositoryImpl();
+    final cartService = CartServiceImpl();
 
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(
-          create: (_) => CatalogProvider(catalogRepository: catalogRepository),
+          create: (_) => CatalogProvider(
+            catalogRepository: catalogRepository,
+          ),
         ),
         ChangeNotifierProvider(
-          create: (_) => CartProvider(cartRepository: cartRepository),
+          create: (_) => CartProvider(
+            cartRepository: cartRepository,
+            cartService: cartService,
+          ),
         ),
       ],
       child: MaterialApp(

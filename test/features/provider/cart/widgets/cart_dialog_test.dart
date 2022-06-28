@@ -15,6 +15,7 @@ class FakeRoute extends Fake implements Route {}
 void main() {
   late _MockCartProvider cartProvider;
   late MockNavigatorObserver mockObserver;
+
   setUp(() {
     cartProvider = _MockCartProvider();
     mockObserver = MockNavigatorObserver();
@@ -42,7 +43,9 @@ void main() {
     }
 
     testWidgets('should renders', (tester) async {
-      when(() => cartProvider.status).thenAnswer((_) => CartStatus.initial);
+      when(() => cartProvider.state).thenAnswer(
+        (_) => const CartState.initial(),
+      );
       await _pumpView(tester);
       expect(find.byType(AlertDialog), findsOneWidget);
     });
@@ -50,9 +53,15 @@ void main() {
     testWidgets(
       'should show progress widget when status is loading',
       (tester) async {
-        when(() => cartProvider.status).thenAnswer((_) => CartStatus.loading);
-        await _pumpView(tester);
+        when(() => cartProvider.state).thenAnswer(
+          (_) => const CartState(
+            items: [],
+            cartStatus: CartStatus.loading,
+            amount: 0,
+          ),
+        );
 
+        await _pumpView(tester);
         expect(find.byType(CoreProgressIndicator), findsOneWidget);
       },
     );
@@ -60,17 +69,45 @@ void main() {
     testWidgets(
       'should show successful widget when status is done',
       (tester) async {
-        when(() => cartProvider.status).thenAnswer((_) => CartStatus.done);
-        await _pumpView(tester);
+        when(() => cartProvider.state).thenAnswer(
+          (_) => const CartState(
+            items: [],
+            cartStatus: CartStatus.done,
+            amount: 0,
+          ),
+        );
 
+        await _pumpView(tester);
         expect(find.text('Payment success'), findsOneWidget);
+      },
+    );
+
+    testWidgets(
+      'should show Container when status is initial',
+      (tester) async {
+        when(() => cartProvider.state).thenAnswer(
+          (_) => const CartState(
+            items: [],
+            cartStatus: CartStatus.initial,
+            amount: 0,
+          ),
+        );
+
+        await _pumpView(tester);
+        expect(find.byType(Container), findsOneWidget);
       },
     );
 
     testWidgets(
       'should navigate back when pressed IconButton',
       (tester) async {
-        when(() => cartProvider.status).thenAnswer((_) => CartStatus.done);
+        when(() => cartProvider.state).thenAnswer(
+          (_) => const CartState(
+            items: [],
+            cartStatus: CartStatus.done,
+            amount: 0,
+          ),
+        );
 
         final key = GlobalKey<NavigatorState>();
         await tester.pumpApp(

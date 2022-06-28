@@ -36,7 +36,13 @@ void main() {
         (_) async => fakeCatalog,
       );
 
-      when((() => cartProvider.items)).thenReturn(items ?? []);
+      when(() => cartProvider.state).thenAnswer(
+        (_) => CartState(
+          items: items ?? [],
+          cartStatus: CartStatus.initial,
+          amount: 0,
+        ),
+      );
 
       final provider = MultiProvider(
         providers: [
@@ -93,7 +99,13 @@ void main() {
       await tester.pump(const Duration(seconds: 1));
 
       when((() => cartProvider.add(items))).thenAnswer((_) {});
-      when(() => cartProvider.items).thenAnswer((_) => [items]);
+      when(() => cartProvider.state).thenAnswer(
+        (_) => CartState(
+          items: [items],
+          cartStatus: CartStatus.initial,
+          amount: 0,
+        ),
+      );
 
       const key = Key('_core_catalog_item_1');
 
@@ -105,7 +117,7 @@ void main() {
       await tester.tap(find.byKey(key));
       await tester.pump();
 
-      expect(cartProvider.items.length, equals(1));
+      expect(cartProvider.state.items.length, equals(1));
     });
   });
 }

@@ -42,7 +42,10 @@ void main() {
       }
 
       testWidgets('should show CartEmpty widget when is empty', (tester) async {
-        when((() => cartProvider.items)).thenReturn([]);
+        when(() => cartProvider.state).thenAnswer(
+          (_) => const CartState.initial(),
+        );
+
         await _pumpView(tester);
 
         expect(find.text('Cart'), findsOneWidget);
@@ -53,13 +56,9 @@ void main() {
 
     group('cart with items', () {
       final fakeCart = Cart(item: fakeCatalog[0], count: 1, amount: 2.10);
+      final fakeItems = [Cart(item: fakeCatalog[0], count: 2, amount: 4.20)];
 
       Future<void> _pumpView(WidgetTester tester) async {
-        final items = [Cart(item: fakeCatalog[0], count: 2, amount: 4.20)];
-
-        when((() => cartProvider.items)).thenReturn(items);
-        when((() => cartProvider.amount)).thenReturn(4.20);
-
         await tester.pumpApp(
           MultiProvider(
             providers: [
@@ -77,6 +76,14 @@ void main() {
       testWidgets(
         'should show list of CartItem widget when has items',
         (tester) async {
+          when(() => cartProvider.state).thenAnswer(
+            (_) => CartState(
+              items: fakeItems,
+              amount: 4.20,
+              cartStatus: CartStatus.initial,
+            ),
+          );
+
           await _pumpView(tester);
 
           expect(find.byType(CartContainer), findsOneWidget);
@@ -87,16 +94,24 @@ void main() {
       testWidgets(
         'should increase total when press increase button',
         (tester) async {
+          when(() => cartProvider.state).thenAnswer(
+            (_) => CartState(
+              items: fakeItems,
+              amount: 4.20,
+              cartStatus: CartStatus.initial,
+            ),
+          );
+
+          when(() => cartProvider.add(fakeCart)).thenAnswer((_) {});
+
           await _pumpView(tester);
-
-          when((() => cartProvider.add(fakeCart))).thenAnswer((_) {});
-
           const key = Key('_cart_item_increase');
-          expect(find.byKey(key), findsOneWidget);
-          await tester.tap(find.byKey(key));
 
+          expect(find.byKey(key), findsOneWidget);
+
+          await tester.tap(find.byKey(key));
           expect(
-            cartProvider.amount.toStringAsFixed(2),
+            cartProvider.state.amount.toStringAsFixed(2),
             (4.20).toStringAsFixed(2),
           );
         },
@@ -105,17 +120,23 @@ void main() {
       testWidgets(
         'should decrease total when press decrease button',
         (tester) async {
-          await _pumpView(tester);
+          when(() => cartProvider.state).thenAnswer(
+            (_) => CartState(
+              items: fakeItems,
+              amount: 2.10,
+              cartStatus: CartStatus.initial,
+            ),
+          );
 
-          when((() => cartProvider.decrease(fakeCart))).thenAnswer((_) {});
-          when((() => cartProvider.amount)).thenReturn(2.10);
+          await _pumpView(tester);
+          when(() => cartProvider.decrease(fakeCart)).thenAnswer((_) {});
 
           const key = Key('_cart_item_decrease');
           expect(find.byKey(key), findsOneWidget);
-          await tester.tap(find.byKey(key));
 
+          await tester.tap(find.byKey(key));
           expect(
-            cartProvider.amount.toStringAsFixed(2),
+            cartProvider.state.amount.toStringAsFixed(2),
             (2.10).toStringAsFixed(2),
           );
         },
@@ -124,10 +145,20 @@ void main() {
       testWidgets(
         'should remove item when press remove button',
         (tester) async {
+          var cartState = CartState(
+            items: fakeItems,
+            amount: 4.20,
+            cartStatus: CartStatus.initial,
+          );
+
+          when(() => cartProvider.state).thenAnswer((_) => cartState);
+          when((() => cartProvider.remove(fakeCart))).thenAnswer((_) {});
+
           await _pumpView(tester);
 
-          when((() => cartProvider.remove(fakeCart))).thenAnswer((_) {});
-          when((() => cartProvider.items)).thenAnswer((_) => []);
+          when((() => cartProvider.state)).thenAnswer(
+            (_) => cartState = cartState.copyWith(items: []),
+          );
 
           const key = Key('_cart_item_remove');
           expect(find.byKey(key), findsOneWidget);
@@ -135,18 +166,28 @@ void main() {
           await tester.ensureVisible(find.byKey(key));
           await tester.tap(find.byKey(key));
 
-          expect(cartProvider.items, isEmpty);
+          expect(cartProvider.state.items, isEmpty);
         },
       );
 
       testWidgets(
         'should successful when payment button pressed',
         (tester) async {
+          var cartState = CartState(
+            items: fakeItems,
+            amount: 4.20,
+            cartStatus: CartStatus.initial,
+          );
+
+          when(() => cartProvider.state).thenAnswer((_) => cartState);
           await _pumpView(tester);
 
           when(() => cartProvider.process()).thenAnswer((_) async => true);
           when(() => cartProvider.resetStatus()).thenAnswer((_) {});
-          when(() => cartProvider.status).thenAnswer((_) => CartStatus.done);
+
+          when(() => cartProvider.state).thenAnswer(
+            (_) => cartState = cartState.copyWith(cartStatus: CartStatus.done),
+          );
 
           expect(find.text('PAYOUT'), findsOneWidget);
           expect(find.byType(CartPayment), findsOneWidget);
@@ -159,6 +200,14 @@ void main() {
           await tester.pumpAndSettle();
 
           expect(find.byType(CartDialog), findsOneWidget);
+
+          await tester.tap(
+            find.byKey(const Key('_cart_payment_success_close_button')),
+          );
+          await tester.pump();
+          await tester.pumpAndSettle();
+
+          verify(() => cartProvider.process()).called(1);
         },
       );
     });
