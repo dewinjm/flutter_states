@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.dewinjm.state_management">
    <application
-        android:label="state_management"
+        android:label="Shopping Cart"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
