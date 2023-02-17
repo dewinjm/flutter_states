@@ -28,7 +28,7 @@ void main() {
       ),
     ];
 
-    Future<void> _pumpView({
+    Future<void> pumpView({
       required WidgetTester tester,
       List<Cart>? items,
     }) async {
@@ -63,24 +63,24 @@ void main() {
     }
 
     testWidgets('should render', (tester) async {
-      await _pumpView(tester: tester);
+      await pumpView(tester: tester);
       expect(find.byType(CatalogView), findsOneWidget);
     });
 
     testWidgets('should hidden badge when cart is empty', (tester) async {
-      await _pumpView(tester: tester);
+      await pumpView(tester: tester);
       expect(find.byType(CoreBadge), findsNothing);
     });
 
     testWidgets('should show badge when cart is not empty', (tester) async {
       final items = [Cart(item: fakeCatalog[0], count: 1)];
-      await _pumpView(tester: tester, items: items);
+      await pumpView(tester: tester, items: items);
       expect(find.byType(CoreBadge), findsOneWidget);
     });
 
     testWidgets('should open cart page when press app bar IconButton',
         (tester) async {
-      await _pumpView(tester: tester);
+      await pumpView(tester: tester);
 
       expect(find.byType(CoreAppBar), findsOneWidget);
 
@@ -95,7 +95,7 @@ void main() {
         (tester) async {
       final items = Cart(item: fakeCatalog[0], count: 10);
 
-      await _pumpView(tester: tester);
+      await pumpView(tester: tester);
       await tester.pump(const Duration(seconds: 1));
 
       when((() => cartProvider.add(items))).thenAnswer((_) {});

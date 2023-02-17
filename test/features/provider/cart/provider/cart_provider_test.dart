@@ -43,7 +43,7 @@ void main() {
       count: 1,
     );
 
-    Future<void> _pumpView(WidgetTester tester) async {
+    Future<void> pumpView(WidgetTester tester) async {
       await tester.pumpWidget(
         MultiProvider(
           providers: [
@@ -64,7 +64,7 @@ void main() {
     }
 
     testWidgets('should add item when call add function', (tester) async {
-      await _pumpView(tester);
+      await pumpView(tester);
 
       cartProvider.add(fakeCart1);
       await tester.pump();
@@ -82,7 +82,7 @@ void main() {
     testWidgets(
       'must reduce the number of items when the function decrease is called',
       (tester) async {
-        await _pumpView(tester);
+        await pumpView(tester);
 
         cartProvider.add(fakeCart2);
         cartProvider.add(fakeCart2);
@@ -98,7 +98,7 @@ void main() {
     testWidgets(
       'must remove item when the function remove is called',
       (tester) async {
-        await _pumpView(tester);
+        await pumpView(tester);
 
         cartProvider.add(fakeCart1);
         await tester.pump();
@@ -113,7 +113,7 @@ void main() {
     testWidgets(
       'should call CartRepository send function when call process function',
       (tester) async {
-        await _pumpView(tester);
+        await pumpView(tester);
 
         when(
           () => cartRepository.send(cartItems: cartProvider.state.items),
@@ -130,7 +130,7 @@ void main() {
       'should return status error'
       'when CartRepository Send throws an error',
       (tester) async {
-        await _pumpView(tester);
+        await pumpView(tester);
 
         when(
           () => cartRepository.send(cartItems: cartProvider.state.items),
@@ -146,7 +146,7 @@ void main() {
     testWidgets(
       'should have initial status when call reset function',
       (tester) async {
-        await _pumpView(tester);
+        await pumpView(tester);
         cartProvider.resetStatus();
 
         await tester.pump();

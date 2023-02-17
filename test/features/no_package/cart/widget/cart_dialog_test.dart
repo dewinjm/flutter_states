@@ -18,7 +18,7 @@ void main() {
   group('No package: CartDialog', () {
     late CartProvider cartProvider;
 
-    Future<void> _pumpView(WidgetTester tester) async {
+    Future<void> pumpView(WidgetTester tester) async {
       await tester.pumpWidget(
         MaterialApp(
           home: CartProvider(
@@ -40,7 +40,7 @@ void main() {
     testWidgets(
       'should renders Container when CartStatus is initial',
       (WidgetTester tester) async {
-        await _pumpView(tester);
+        await pumpView(tester);
 
         cartProvider.cartNotifier.value =
             cartProvider.cartNotifier.value.copyWith(
@@ -61,7 +61,7 @@ void main() {
     testWidgets(
       'should renders CartPaymentSuccess when CartStatus is error',
       (WidgetTester tester) async {
-        await _pumpView(tester);
+        await pumpView(tester);
 
         cartProvider.cartNotifier.value =
             cartProvider.cartNotifier.value.copyWith(
@@ -83,7 +83,7 @@ void main() {
       'should renders CoreProgressIndicator'
       'when CartStatus is loading',
       (WidgetTester tester) async {
-        await _pumpView(tester);
+        await pumpView(tester);
 
         cartProvider.cartNotifier.value =
             cartProvider.cartNotifier.value.copyWith(
@@ -104,7 +104,7 @@ void main() {
     testWidgets(
       'should renders CartPaymentSuccess when CartStatus is done',
       (WidgetTester tester) async {
-        await _pumpView(tester);
+        await pumpView(tester);
 
         cartProvider.cartNotifier.value =
             cartProvider.cartNotifier.value.copyWith(

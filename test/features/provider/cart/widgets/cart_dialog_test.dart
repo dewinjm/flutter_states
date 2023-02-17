@@ -26,7 +26,7 @@ void main() {
   });
 
   group('Provider: CartDialog', () {
-    Future<void> _pumpView(WidgetTester tester) async {
+    Future<void> pumpView(WidgetTester tester) async {
       await tester.pumpApp(
         MultiProvider(
           providers: [
@@ -46,7 +46,7 @@ void main() {
       when(() => cartProvider.state).thenAnswer(
         (_) => const CartState.initial(),
       );
-      await _pumpView(tester);
+      await pumpView(tester);
       expect(find.byType(AlertDialog), findsOneWidget);
     });
 
@@ -61,7 +61,7 @@ void main() {
           ),
         );
 
-        await _pumpView(tester);
+        await pumpView(tester);
         expect(find.byType(CoreProgressIndicator), findsOneWidget);
       },
     );
@@ -77,7 +77,7 @@ void main() {
           ),
         );
 
-        await _pumpView(tester);
+        await pumpView(tester);
         expect(find.text('Payment success'), findsOneWidget);
       },
     );
@@ -93,7 +93,7 @@ void main() {
           ),
         );
 
-        await _pumpView(tester);
+        await pumpView(tester);
         expect(find.byType(Container), findsOneWidget);
       },
     );

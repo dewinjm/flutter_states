@@ -45,7 +45,7 @@ void main() {
     group('cart with items', () {
       late CartProvider cartProvider;
 
-      Future<void> _pumpView(WidgetTester tester) async {
+      Future<void> pumpView(WidgetTester tester) async {
         await tester.pumpApp(
           CartProvider(
             cartRepository: mockCartRepository,
@@ -71,7 +71,7 @@ void main() {
       testWidgets(
         'should show list of CartItem widget when has items',
         (tester) async {
-          await _pumpView(tester);
+          await pumpView(tester);
 
           expect(find.byType(CartContainer), findsOneWidget);
           expect(find.byType(CartItem), findsWidgets);
@@ -81,7 +81,7 @@ void main() {
       testWidgets(
         'should increase count when press increase button',
         (tester) async {
-          await _pumpView(tester);
+          await pumpView(tester);
           const key = Key('_cart_item_increase');
 
           expect(find.byKey(key), findsOneWidget);
@@ -98,7 +98,7 @@ void main() {
       testWidgets(
         'should increase count when press decrease button',
         (tester) async {
-          await _pumpView(tester);
+          await pumpView(tester);
 
           const key = Key('_cart_item_decrease');
           expect(find.byKey(key), findsOneWidget);
@@ -112,7 +112,7 @@ void main() {
       testWidgets(
         'should remove item when press remove button',
         (tester) async {
-          await _pumpView(tester);
+          await pumpView(tester);
 
           const key = Key('_cart_item_remove');
 
@@ -129,7 +129,7 @@ void main() {
     group('onPaymentPressed', () {
       late CartProvider cartProvider;
 
-      Future<void> _pumpView(WidgetTester tester) async {
+      Future<void> pumpView(WidgetTester tester) async {
         await tester.pumpApp(
           CartProvider(
             cartRepository: mockCartRepository,
@@ -152,7 +152,7 @@ void main() {
       testWidgets(
         'should show dialog when payment cart process is successfully',
         (tester) async {
-          await _pumpView(tester);
+          await pumpView(tester);
           final items = cartProvider.cartNotifier.value.items;
 
           when(() => mockCartRepository.send(cartItems: items))
@@ -183,7 +183,7 @@ void main() {
       testWidgets(
         'should return status error when cart process throws an error',
         (tester) async {
-          await _pumpView(tester);
+          await pumpView(tester);
 
           final items = cartProvider.cartNotifier.value.items;
           when(() => mockCartRepository.send(cartItems: items)).thenThrow(

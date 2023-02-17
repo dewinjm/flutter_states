@@ -28,7 +28,7 @@ void main() {
       amount: 4.0,
     );
 
-    Future<void> _pumpView(WidgetTester tester) async {
+    Future<void> pumpView(WidgetTester tester) async {
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
@@ -51,7 +51,7 @@ void main() {
         ),
       );
 
-      await _pumpView(tester);
+      await pumpView(tester);
       expect(
         find.descendant(
           of: find.byType(CartDialog),
@@ -72,7 +72,7 @@ void main() {
           ),
         );
 
-        await _pumpView(tester);
+        await pumpView(tester);
         expect(
           find.descendant(
             of: find.byType(CartDialog),
@@ -95,7 +95,7 @@ void main() {
           ),
         );
 
-        await _pumpView(tester);
+        await pumpView(tester);
         expect(find.byType(CoreProgressIndicator), findsOneWidget);
       },
     );
@@ -111,7 +111,7 @@ void main() {
           ),
         );
 
-        await _pumpView(tester);
+        await pumpView(tester);
         expect(find.byType(CartPaymentSuccess), findsOneWidget);
       },
     );

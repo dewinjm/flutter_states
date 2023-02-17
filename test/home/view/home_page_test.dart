@@ -13,13 +13,13 @@ import 'package:state_management/home/home.dart';
 import '../../helpers/helpers.dart';
 
 void main() {
-  Future<void> _pumpView(WidgetTester tester) async {
+  Future<void> pumpView(WidgetTester tester) async {
     await tester.pumpApp(const HomePage());
   }
 
   group('HomePage', () {
     testWidgets('should renders', (tester) async {
-      await _pumpView(tester);
+      await pumpView(tester);
 
       expect(
         find.text('Flutter State Managament'),
@@ -37,7 +37,7 @@ void main() {
 
     testWidgets('should open catalog page when press menu "No Package"',
         (tester) async {
-      await _pumpView(tester);
+      await pumpView(tester);
 
       await tester.tap(find.byKey(const Key('_menu_0')));
       await tester.pump();
@@ -48,7 +48,7 @@ void main() {
 
     testWidgets('should open catalog page when press menu "Provider"',
         (tester) async {
-      await _pumpView(tester);
+      await pumpView(tester);
 
       await tester.tap(find.byKey(const Key('_menu_1')));
       await tester.pump();
@@ -59,7 +59,7 @@ void main() {
 
     testWidgets('should open catalog page when press menu "Riverpod"',
         (tester) async {
-      await _pumpView(tester);
+      await pumpView(tester);
 
       await tester.tap(find.byKey(const Key('_menu_2')));
       await tester.pump();
@@ -70,7 +70,7 @@ void main() {
 
     testWidgets('should open catalog page when press menu "Bloc"',
         (tester) async {
-      await _pumpView(tester);
+      await pumpView(tester);
 
       await tester.tap(find.byKey(const Key('_menu_3')));
       await tester.pump();

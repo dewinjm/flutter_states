@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:state_management/common/widget/widget.dart';
 import 'package:state_management/features/no_package/no_package.dart';
 
-class Badge extends StatelessWidget {
-  const Badge({Key? key}) : super(key: key);
+class BadgeItem extends StatelessWidget {
+  const BadgeItem({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
