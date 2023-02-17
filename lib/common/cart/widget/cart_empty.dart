@@ -55,7 +55,7 @@ class CartEmpty extends StatelessWidget {
                         Values.borderRadius,
                       ),
                     ),
-                    primary: Palette.accent,
+                    backgroundColor: Palette.accent,
                   ),
                   child: const Padding(
                     padding: EdgeInsets.symmetric(

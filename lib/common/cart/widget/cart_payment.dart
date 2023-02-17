@@ -58,7 +58,7 @@ class CartPayment extends StatelessWidget {
                       Values.borderRadius,
                     ),
                   ),
-                  primary: Palette.accent,
+                  backgroundColor: Palette.accent,
                 ),
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
