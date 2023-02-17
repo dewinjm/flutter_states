@@ -28,7 +28,7 @@ void main() {
       amount: 4.0,
     );
 
-    Future<void> _pumpView(WidgetTester tester) async {
+    Future<void> pumpView(WidgetTester tester) async {
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
@@ -46,7 +46,7 @@ void main() {
           (WidgetTester tester) async {
         when(() => cartBloc.state).thenReturn(const CartState.initial());
 
-        await _pumpView(tester);
+        await pumpView(tester);
 
         expect(find.text('Cart'), findsOneWidget);
         expect(find.byType(CartEmpty), findsOneWidget);
@@ -62,7 +62,7 @@ void main() {
           ),
         );
 
-        await _pumpView(tester);
+        await pumpView(tester);
 
         expect(
           find.descendant(
@@ -88,7 +88,7 @@ void main() {
       testWidgets(
         'should increase total when press increase button',
         (WidgetTester tester) async {
-          await _pumpView(tester);
+          await pumpView(tester);
 
           expect(find.byType(CartItem), findsOneWidget);
 
@@ -108,7 +108,7 @@ void main() {
           when(() => cartBloc.state).thenReturn(
             mockCartState.copyWith(amount: 2.0),
           );
-          await _pumpView(tester);
+          await pumpView(tester);
 
           const key = Key('_cart_item_decrease');
           expect(find.byKey(key), findsOneWidget);
@@ -125,7 +125,7 @@ void main() {
       testWidgets(
         'should remove item when press remove button',
         (WidgetTester tester) async {
-          await _pumpView(tester);
+          await pumpView(tester);
 
           const key = Key('_cart_item_remove');
           expect(find.byKey(key), findsOneWidget);
@@ -149,7 +149,7 @@ void main() {
             ),
           );
 
-          await _pumpView(tester);
+          await pumpView(tester);
 
           expect(find.text('PAYOUT'), findsOneWidget);
           expect(find.byType(CartPayment), findsOneWidget);

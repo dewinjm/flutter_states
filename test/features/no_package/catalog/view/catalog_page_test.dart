@@ -44,7 +44,7 @@ void main() {
       ),
     ];
 
-    Future<void> _pumpView({required WidgetTester tester}) async {
+    Future<void> pumpView({required WidgetTester tester}) async {
       await tester.pumpWidget(
         MaterialApp(
           initialRoute: '/',
@@ -61,7 +61,7 @@ void main() {
     }
 
     testWidgets('should renders', (tester) async {
-      await _pumpView(tester: tester);
+      await pumpView(tester: tester);
 
       expect(find.text('No Package Catalog'), findsOneWidget);
       expect(find.byType(CatalogView), findsOneWidget);
@@ -69,20 +69,20 @@ void main() {
     });
 
     testWidgets('should hidden badge when cart is empty', (tester) async {
-      await _pumpView(tester: tester);
+      await pumpView(tester: tester);
       expect(find.byType(CoreBadge), findsNothing);
     });
 
     testWidgets('should show badge when cart is not empty', (tester) async {
       catalogState.cartNotifier.add(Cart(item: fakeCatalog[0], count: 1));
 
-      await _pumpView(tester: tester);
+      await pumpView(tester: tester);
       expect(find.byType(CoreBadge), findsOneWidget);
     });
 
     testWidgets('should open cart page when press app bar IconButton',
         (tester) async {
-      await _pumpView(tester: tester);
+      await pumpView(tester: tester);
 
       await tester.tap(find.byKey(const Key('_core_app_bar_button')));
       await tester.pump();
@@ -100,7 +100,7 @@ void main() {
       catalogState.cartNotifier.add(Cart(item: fakeCatalog[0], count: 1));
       catalogState.cartNotifier.add(Cart(item: fakeCatalog[1], count: 1));
 
-      await _pumpView(tester: tester);
+      await pumpView(tester: tester);
 
       await tester.pump(const Duration(seconds: 1));
 

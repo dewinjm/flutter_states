@@ -27,7 +27,7 @@ void main() {
     });
 
     group('cart without items', () {
-      Future<void> _pumpView(WidgetTester tester) async {
+      Future<void> pumpView(WidgetTester tester) async {
         await tester.pumpApp(
           MultiProvider(
             providers: [
@@ -46,7 +46,7 @@ void main() {
           (_) => const CartState.initial(),
         );
 
-        await _pumpView(tester);
+        await pumpView(tester);
 
         expect(find.text('Cart'), findsOneWidget);
         expect(find.byType(CartView), findsOneWidget);
@@ -58,7 +58,7 @@ void main() {
       final fakeCart = Cart(item: fakeCatalog[0], count: 1, amount: 2.10);
       final fakeItems = [Cart(item: fakeCatalog[0], count: 2, amount: 4.20)];
 
-      Future<void> _pumpView(WidgetTester tester) async {
+      Future<void> pumpView(WidgetTester tester) async {
         await tester.pumpApp(
           MultiProvider(
             providers: [
@@ -84,7 +84,7 @@ void main() {
             ),
           );
 
-          await _pumpView(tester);
+          await pumpView(tester);
 
           expect(find.byType(CartContainer), findsOneWidget);
           expect(find.byType(CartItem), findsWidgets);
@@ -104,7 +104,7 @@ void main() {
 
           when(() => cartProvider.add(fakeCart)).thenAnswer((_) {});
 
-          await _pumpView(tester);
+          await pumpView(tester);
           const key = Key('_cart_item_increase');
 
           expect(find.byKey(key), findsOneWidget);
@@ -128,7 +128,7 @@ void main() {
             ),
           );
 
-          await _pumpView(tester);
+          await pumpView(tester);
           when(() => cartProvider.decrease(fakeCart)).thenAnswer((_) {});
 
           const key = Key('_cart_item_decrease');
@@ -154,7 +154,7 @@ void main() {
           when(() => cartProvider.state).thenAnswer((_) => cartState);
           when((() => cartProvider.remove(fakeCart))).thenAnswer((_) {});
 
-          await _pumpView(tester);
+          await pumpView(tester);
 
           when((() => cartProvider.state)).thenAnswer(
             (_) => cartState = cartState.copyWith(items: []),
@@ -180,7 +180,7 @@ void main() {
           );
 
           when(() => cartProvider.state).thenAnswer((_) => cartState);
-          await _pumpView(tester);
+          await pumpView(tester);
 
           when(() => cartProvider.process()).thenAnswer((_) async => true);
           when(() => cartProvider.resetStatus()).thenAnswer((_) {});

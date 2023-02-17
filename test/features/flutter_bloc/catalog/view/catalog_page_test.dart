@@ -21,7 +21,7 @@ void main() {
   });
 
   group('Bloc: Catalog Page', () {
-    Future<void> _pumpView(WidgetTester tester) async {
+    Future<void> pumpView(WidgetTester tester) async {
       await tester.pumpWidget(
         MultiBlocProvider(
           providers: [
@@ -42,7 +42,7 @@ void main() {
         when(() => catalogBloc.state).thenReturn(CatalogLoading());
         when(() => cartBloc.state).thenReturn(const CartState.initial());
 
-        await _pumpView(tester);
+        await pumpView(tester);
 
         expect(
           find.descendant(
@@ -69,7 +69,7 @@ void main() {
         );
         when(() => cartBloc.state).thenReturn(const CartState.initial());
 
-        await _pumpView(tester);
+        await pumpView(tester);
 
         expect(find.byType(CatalogItem), findsNWidgets(1));
       });
@@ -79,7 +79,7 @@ void main() {
         when(() => catalogBloc.state).thenReturn(CatalogError());
         when(() => cartBloc.state).thenReturn(const CartState.initial());
 
-        await _pumpView(tester);
+        await pumpView(tester);
 
         expect(find.text('Error loading catalog'), findsOneWidget);
       });
@@ -90,7 +90,7 @@ void main() {
       when(() => catalogBloc.state).thenReturn(CatalogLoading());
       when(() => cartBloc.state).thenReturn(const CartState.initial());
 
-      await _pumpView(tester);
+      await pumpView(tester);
 
       expect(find.byType(CoreAppBar), findsOneWidget);
 
@@ -122,7 +122,7 @@ void main() {
         const CartState.initial().copyWith(items: [fakeCart]),
       );
 
-      await _pumpView(tester);
+      await pumpView(tester);
       await tester.pump(const Duration(seconds: 1));
 
       const key = Key('_core_catalog_item_1');

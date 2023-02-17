@@ -25,7 +25,7 @@ void main() {
       ),
     ];
 
-    Future<void> _pumpView(WidgetTester tester) async {
+    Future<void> pumpView(WidgetTester tester) async {
       await tester.pumpWidget(
         ProviderScope(
           overrides: [
@@ -43,7 +43,7 @@ void main() {
         (_) async => fakeCatalog,
       );
 
-      await _pumpView(tester);
+      await pumpView(tester);
 
       await tester.pump(const Duration(seconds: 1));
       expect(find.byType(CatalogView), findsOneWidget);
@@ -52,7 +52,7 @@ void main() {
     testWidgets('should render text error when has loading error',
         (tester) async {
       when(() => catalogRepository.fetch()).thenThrow(Exception());
-      await _pumpView(tester);
+      await pumpView(tester);
 
       await tester.pump(const Duration(seconds: 1));
       expect(find.text('Error loading catalog'), findsOneWidget);
@@ -63,7 +63,7 @@ void main() {
       when(() => catalogRepository.fetch()).thenAnswer(
         (_) async => fakeCatalog,
       );
-      await _pumpView(tester);
+      await pumpView(tester);
 
       expect(find.byType(CoreAppBar), findsOneWidget);
 
@@ -80,7 +80,7 @@ void main() {
         (_) async => fakeCatalog,
       );
 
-      await _pumpView(tester);
+      await pumpView(tester);
       await tester.pump(const Duration(seconds: 1));
 
       const key = Key('_core_catalog_item_1');
