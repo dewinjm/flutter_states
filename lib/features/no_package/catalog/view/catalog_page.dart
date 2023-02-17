@@ -16,7 +16,7 @@ class _CatalogPageState extends State<CatalogPage> {
       backgroundColor: Palette.primary,
       appBar: CoreAppBar(
         title: 'No Package Catalog',
-        badge: const Badge(),
+        badge: const BadgeItem(),
         onPressed: () => _goToCart(),
       ),
       body: const CatalogView(),
